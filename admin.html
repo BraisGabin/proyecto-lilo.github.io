@@ -510,19 +510,37 @@
   }
   ['buscaCaso', 'filtroEstado', 'filtroAnimal', 'filtroProvincia'].forEach(id => $(id).addEventListener('input', pintarCasos));
   ['buscaAsoc', 'filtroAsoc'].forEach(id => $(id).addEventListener('input', pintarAsociaciones));
-  async function cargar() {
-    $('recargar').disabled = true;
-    try {
-      D = await llamar('adminDatos');
-      $('cargando').hidden = true; mostrarMensaje('');
-      pintarTodo();
+  // Para que abra al instante: se enseñan los últimos datos guardados en este navegador y se actualizan por detrás.
+  const CACHE = 'lilo_admin_d_' + String(K || '').slice(0, 8);
+  let abierto = false;
+  function abrir() {
+    $('cargando').hidden = true;
+    pintarTodo();
+    if (!abierto) {
       let s = 'resumen'; try { s = localStorage.getItem('lilo_admin_s') || 'resumen'; } catch (e) {}
       ir(SECCIONES[s] ? s : 'resumen');
+      abierto = true;
+    }
+  }
+  async function cargar() {
+    $('recargar').disabled = true;
+    if (abierto) mostrarMensaje('Actualizando…');
+    try {
+      D = await llamar('adminDatos');
+      mostrarMensaje('');
+      abrir();
+      try { localStorage.setItem(CACHE, JSON.stringify(D)); } catch (e) {}
     } catch (err) {
       $('cargando').hidden = true;
       mostrarMensaje(K ? err.message : 'Falta la clave de administración en el enlace. Usa el enlace que te llegó a la cuenta de gestión.', true);
     }
     $('recargar').disabled = false;
+  }
+  if (K) {
+    try {
+      const guardado = JSON.parse(localStorage.getItem(CACHE) || 'null');
+      if (guardado && guardado.casos) { D = guardado; abrir(); }
+    } catch (e) {}
   }
   $('recargar').addEventListener('click', cargar);
   cargar();
