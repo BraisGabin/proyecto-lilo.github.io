@@ -114,6 +114,7 @@
 <script>
   const URL_APP = 'https://script.google.com/macros/s/AKfycbzM3bx9_FngJIiSng54z79mJwkgaV_t6sA6j6kUOjbUV7gSQpBUikOaHTkXh1Wz6SEp/exec';
   const q = new URLSearchParams(location.search);
+  try { if (localStorage.getItem('lilo_soy_admin') === '1') q.set('admin', '1'); } catch (e) {}
   const $ = id => document.getElementById(id);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 

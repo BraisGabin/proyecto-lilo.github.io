@@ -582,6 +582,8 @@
     if (abierto) mostrarMensaje('Actualizando…');
     try {
       D = await llamar('adminDatos');
+      // Este navegador es del administrador: lo que abra aquí (paneles o fichas de asociaciones) no cuenta como visita.
+      try { localStorage.setItem('lilo_soy_admin', '1'); } catch (e) {}
       mostrarMensaje('');
       abrir();
       try { localStorage.setItem(CACHE, JSON.stringify(D)); } catch (e) {}
