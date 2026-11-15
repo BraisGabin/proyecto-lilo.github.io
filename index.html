@@ -146,6 +146,36 @@
     .peligro { background: transparent; color: var(--rojo); border: 1px solid var(--rojo); font-size: 15px; padding: 11px; }
     .peligro:hover { background: #fdecea; }
     fieldset { min-width: 0; max-width: 100%; box-sizing: border-box; }
+    /* ---- Ficha del caso: modo compacto y tarjetas */
+    body.modo-ficha header { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 10px; }
+    body.modo-ficha header .huella { font-size: 22px; }
+    body.modo-ficha header .marca { font-size: 18px; margin: 0; }
+    body.modo-ficha header .submarca, body.modo-ficha .pestanas { display: none; }
+    body.modo-ficha main { padding-top: 12px; }
+    body.modo-ficha #casoChips { display: none; }
+    body.modo-ficha #caso h1 { font-size: 26px; margin: 4px 0 8px; }
+    .esencial { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 18px; }
+    .esencial .dato { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 10px 12px; min-width: 0; }
+    .esencial .dato.ancho { grid-column: 1 / -1; }
+    .esencial .dato.alerta { border-color: var(--rojo); background: #fdeeec; }
+    .esencial .et { font-size: 12.5px; color: var(--suave); display: block; margin-bottom: 2px; }
+    .esencial .va { font-weight: 650; font-size: 15.5px; overflow-wrap: anywhere; line-height: 1.35; }
+    .esencial .mapa { display: inline-block; margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--acento-oscuro); text-decoration: none;
+      border: 1px solid var(--acento); border-radius: 999px; padding: 4px 12px; background: #fff6ec; }
+    .motor { grid-column: 1 / -1; background: var(--rojo); color: #fff; border-radius: 14px; padding: 12px 14px; font-weight: 800; text-align: center; }
+    .titulo-bloque { font-size: 18px; margin: 26px 0 10px; }
+    .detalle { display: grid; gap: 10px; }
+    .detalle .seccion { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; }
+    .detalle h3 { margin: 0 0 8px; font-size: 16px; }
+    .detalle dl { margin: 0; display: grid; grid-template-columns: minmax(110px, 38%) 1fr; gap: 6px 12px; font-size: 15px; }
+    .detalle dt { color: var(--suave); }
+    .detalle dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+    .detalle .libre-texto { font-size: 15px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .detalle .nota { color: var(--suave); font-size: 14px; margin: 0; }
+    @media (max-width: 420px) { .detalle dl { grid-template-columns: 1fr; gap: 0; } .detalle dd { margin-bottom: 8px; } }
+    details.original { margin-top: 10px; }
+    details.original summary { cursor: pointer; color: var(--acento-oscuro); font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+    .tarjeta-bloque { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; }
     .ofertas { background: #eef5fd; border: 1px solid #c9dcf3; border-radius: 12px; padding: 12px 14px; margin: 0 0 16px; }
     .ofertas h3 { margin: 0 0 8px; font-size: 16px; color: #1f5fa8; }
     .ofertas .oferta { border-top: 1px solid #d6e5f6; padding: 8px 0 4px; font-size: 15px; overflow-wrap: anywhere; }
@@ -459,6 +489,7 @@
       <div class="estado-caja" id="casoEstado"></div>
       <p class="yo" id="casoYo"></p>
       <div class="ofertas" id="casoAyudas" hidden></div>
+      <div class="esencial" id="casoEsencial"></div>
 
       <fieldset id="bloqueQuedarse" hidden>
         <legend id="tituloQuedarse">¿Podéis ir vosotros?</legend>
@@ -496,21 +527,19 @@
       </fieldset>
       <p class="ok" id="casoOk" role="status"></p>
 
-      <fieldset>
-        <legend>Historial</legend>
-        <ul class="historial" id="casoHistorial"></ul>
-      </fieldset>
-
-      <fieldset>
-        <legend>Fotos y vídeos</legend>
-        <div id="casoGaleria"></div>
-      </fieldset>
-
-      <fieldset>
-        <legend>El aviso</legend>
+      <h2 class="titulo-bloque">📋 Todo el aviso</h2>
+      <div class="detalle" id="casoDetalle"></div>
+      <details class="original">
+        <summary>Ver el aviso tal cual llegó</summary>
         <div class="aviso-texto" id="casoAviso"></div>
-        <p style="margin:12px 0"><a id="casoCarpeta" target="_blank" rel="noopener">Abrir la carpeta del caso en Drive (fotos)</a></p>
-      </fieldset>
+      </details>
+
+      <h2 class="titulo-bloque">📷 Fotos y vídeos</h2>
+      <div class="tarjeta-bloque"><div id="casoGaleria"></div>
+        <p style="margin:10px 0 0"><a id="casoCarpeta" target="_blank" rel="noopener">Abrir la carpeta del caso en Drive</a></p></div>
+
+      <h2 class="titulo-bloque">🕒 Historial</h2>
+      <div class="tarjeta-bloque"><ul class="historial" id="casoHistorial"></ul></div>
     </div>
   </section>
 
@@ -598,6 +627,7 @@
   const pedida = new URLSearchParams(location.search).get('seccion');
   const PARAMS = new URLSearchParams(location.search);
   const SECCION = PARAMS.get('caso') ? 'caso' : (SECCIONES.includes(pedida) && pedida !== 'caso' ? pedida : 'rescates');
+  if (SECCION === 'caso') document.body.classList.add('modo-ficha');
 
   /* ---------- Pestañas */
   function mostrar(seccion) {
@@ -1012,6 +1042,83 @@
       chema: PARAMS.get('chema') || '', admin: PARAMS.get('admin') || (soyAdmin() ? '1' : '') };
     const $ = id => document.getElementById(id);
     const casoError = $('casoError'), casoOk = $('casoOk');
+    // El aviso llega como texto («== DÓNDE ==», «Clave: valor»): se pasa a tarjetas fáciles de leer.
+    function leerAviso(texto) {
+      const secciones = [], cabecera = {};
+      let actual = null, motor = false;
+      String(texto || '').split('\n').forEach(linea => {
+        const t = linea.trim();
+        const m = t.match(/^== (.+) ==$/);
+        if (m) { actual = { titulo: m[1], datos: [], libre: [] }; secciones.push(actual); return; }
+        if (/^¡ATRAPADO EN EL MOTOR/.test(t)) { motor = true; return; }
+        if (!t || /^Quien avisa aceptó/.test(t)) return;
+        const kv = t.match(/^([^:]{2,45}): (.*)$/);
+        if (!actual) { if (kv) cabecera[kv[1]] = kv[2]; return; }
+        if (kv && !/^https?$/i.test(kv[1])) { if (kv[2].trim() && kv[2].trim() !== '—') actual.datos.push([kv[1], kv[2].trim()]); }
+        else if (t !== '—') actual.libre.push(t);
+      });
+      return { secciones, cabecera, motor };
+    }
+    const ICONOS = { 'QUIÉN AVISA': '📞', 'DÓNDE': '📍', 'CÓMO ESTÁ': '🩺', 'SITUACIÓN': '🧭', 'MÁS DETALLES': '📝' };
+    function pintarAviso(c) {
+      const a = leerAviso(c.aviso), dato = (sec, clave) => {
+        const s = a.secciones.find(x => x.titulo.indexOf(sec) === 0);
+        const d = s && s.datos.find(x => x[0] === clave);
+        return d ? d[1] : '';
+      };
+      const animal = c.animal === 'Perro' ? 'PERRO' : 'GATO';
+      // Lo esencial
+      const es = $('casoEsencial'); es.innerHTML = '';
+      const caja = (etiqueta, valor, clase) => {
+        if (!valor) return null;
+        const d = crear('div', 'dato' + (clase ? ' ' + clase : ''));
+        d.appendChild(crear('span', 'et', etiqueta)); d.appendChild(crear('div', 'va', valor));
+        es.appendChild(d); return d;
+      };
+      if (a.motor) es.appendChild(crear('div', 'motor', '🚗 ¡Atrapado en el motor de un coche!'));
+      const lugar = [dato('DÓNDE', 'Dirección o punto de referencia'), dato('DÓNDE', 'Localidad') || c.municipio, c.provincia].filter(Boolean).join(', ');
+      const dLugar = caja('📍 Dónde', lugar, 'ancho');
+      if (dLugar) {
+        const enlace = dato('DÓNDE', 'Enlace de Google Maps');
+        const m = crear('a', 'mapa', '🗺️ Abrir en el mapa');
+        m.href = /^https?:/.test(enlace) ? enlace : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(lugar);
+        m.target = '_blank'; m.rel = 'noopener'; dLugar.appendChild(m);
+      }
+      const cuantos = dato('EL ' + animal, 'Cuántos');
+      caja((c.animal === 'Perro' ? '🐕' : '🐈') + ' Animal', [c.animal, cuantos && cuantos !== '1' ? cuantos : '', dato('EL ' + animal, 'Edad aproximada')].filter(Boolean).join(' · '));
+      caja('⚠️ Urgencia', c.urgencia, /emergencia|urgente/i.test(c.urgencia || '') ? 'alerta' : '');
+      caja('🩺 Cómo está', dato('CÓMO ESTÁ', 'Señales'), 'ancho');
+      caja('🤲 ¿Se deja coger?', dato('SITUACIÓN', '¿Se deja coger?'));
+      caja('⏳ Desde cuándo', dato('SITUACIÓN', 'Desde cuándo está ahí'));
+      caja('🕒 Aviso recibido', c.recibido, 'ancho');
+      // Todo el aviso, por apartados
+      const det = $('casoDetalle'); det.innerHTML = '';
+      const orden = ['DÓNDE', 'EL ', 'CÓMO ESTÁ', 'SITUACIÓN', 'MÁS DETALLES', 'QUIÉN AVISA'];
+      orden.forEach(pref => a.secciones.filter(s => s.titulo.indexOf(pref) === 0).forEach(s => {
+        if (!s.datos.length && !s.libre.length) return;
+        const caj = crear('div', 'seccion');
+        const ico = s.titulo.indexOf('EL ') === 0 ? (c.animal === 'Perro' ? '🐕' : '🐈') : (ICONOS[s.titulo] || '•');
+        const nombre = s.titulo.charAt(0) + s.titulo.slice(1).toLowerCase();
+        caj.appendChild(crear('h3', '', ico + ' ' + nombre));
+        if (s.datos.length) {
+          const dl = crear('dl');
+          s.datos.forEach(([k, v]) => {
+            dl.appendChild(crear('dt', '', k));
+            const dd = crear('dd');
+            if (/^https?:\/\//.test(v)) { const l = crear('a', '', 'Abrir enlace'); l.href = v; l.target = '_blank'; l.rel = 'noopener'; dd.appendChild(l); }
+            else if (k === 'Teléfono') { const tel = v.replace(' (tiene WhatsApp)', ''); const l = crear('a', '', v); l.href = 'tel:' + tel.replace(/[^\d+]/g, ''); dd.appendChild(l); }
+            else if (k === 'Email' && v.includes('@')) { const l = crear('a', '', v); l.href = 'mailto:' + v; dd.appendChild(l); }
+            else dd.textContent = v;
+            dl.appendChild(dd);
+          });
+          caj.appendChild(dl);
+        }
+        if (s.libre.length) caj.appendChild(crear('div', s.titulo === 'QUIÉN AVISA' ? 'nota' : 'libre-texto', s.libre.join('\n')));
+        det.appendChild(caj);
+      }));
+      if (!det.children.length) det.appendChild(crear('p', 'nota', 'No hemos podido leer el aviso. Abre «Ver el aviso tal cual llegó».'));
+    }
+
     const pintarCaso = (r) => {
       const c = r.caso;
       $('casoCargando').hidden = true;
@@ -1113,6 +1220,7 @@
         });
       }
       $('casoAviso').textContent = c.aviso || 'No hemos podido leer el aviso.';
+      pintarAviso(c);
       $('casoCarpeta').href = c.carpeta;
     };
     if (credencial.a && credencial.t) {
