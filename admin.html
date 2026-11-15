@@ -52,6 +52,13 @@
     .tarjeta .titulo { font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
     .tarjeta .meta { color: var(--suave); font-size: 13px; }
     .casosAsoc { margin-top: 6px; font-size: 14px; }
+    .actividad { margin-top: 8px; padding: 8px 10px; border-radius: 10px; font-size: 13.5px; line-height: 1.5; border-left: 4px solid #ccc; background: #fafafa; }
+    .actividad.verde { border-color: #3f8a55; background: #eef7f1; }
+    .actividad.amarilla { border-color: #d6a516; background: #fdf7e3; }
+    .actividad.roja { border-color: #c8412f; background: #fdeeec; }
+    .semaforo { display: flex; flex-wrap: wrap; gap: 8px 18px; font-weight: 700; margin-bottom: 8px; }
+    .peores { margin: 6px 0; padding-left: 18px; font-size: 14px; }
+    .peores li { margin: 3px 0; }
     .resumenCasos { margin-top: 8px; padding: 8px 10px; background: #f8f3ec; border-radius: 10px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 14px; }
     .resumenCasos.vacio0 { color: var(--suave); }
     .resumenCasos .num { font-weight: 600; }
@@ -106,6 +113,7 @@
       <div class="bloque"><h3>Necesitan atención</h3><div id="atencion"></div></div>
       <div class="bloque"><h3>Casos por estado</h3><div class="barras" id="porEstado"></div></div>
     </div>
+    <div class="bloque"><h3>Actividad de las asociaciones</h3><div id="actividadAsoc"></div></div>
     <div class="dos-col">
       <div class="bloque"><h3>Casos por provincia</h3><div class="barras" id="porProvincia"></div></div>
       <div class="bloque"><h3>Asociaciones por comunidad</h3><div class="barras" id="asocPorComunidad"></div></div>
@@ -139,7 +147,9 @@
     <div class="filtros">
       <input type="search" id="buscaAsoc" placeholder="Buscar: nombre, correo, provincia…">
       <select id="filtroAsoc"><option value="">Todas</option><option value="aprobada">Dadas de alta</option>
-        <option value="pendiente">Pendientes de aprobar</option><option value="baja">Dadas de baja</option></select>
+        <option value="pendiente">Pendientes de aprobar</option><option value="baja">Dadas de baja</option>
+        <option value="_verde">🟢 Activas</option><option value="_amarilla">🟡 Miran pero no actúan</option>
+        <option value="_roja">🔴 Inactivas</option><option value="_gris">⚪ Sin avisos en su zona</option></select>
     </div>
     <p class="vacio" id="cuentaAsoc"></p>
     <div class="tarjetas" id="listaAsoc"></div>
@@ -254,6 +264,7 @@
     ];
     $('cifras').innerHTML = cifras.map(([t, n, cl]) => `<div class="cifra ${cl}"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
     barras('porEstado', contar(c, 'estado'));
+    pintarActividadAsoc();
     barras('porProvincia', contar(c, 'provincia').slice(0, 12));
     barras('asocPorComunidad', contar(a.filter(x => x.estado === 'aprobada'), x => [...new Set(x.provincias.map(p => COMUNIDAD_DE[p] || p))]).slice(0, 12));
     const ahora = Date.now();
@@ -311,6 +322,49 @@
     catch (err) { mostrarMensaje(err.message, true); b.disabled = false; b.textContent = 'Asignar'; }
   });
 
+  /* ---------- Actividad de las asociaciones (solo la ves tú) */
+  function haceDias(ms) {
+    if (!ms) return 'nunca';
+    const d = Math.floor((Date.now() - ms) / 864e5);
+    return d <= 0 ? 'hoy' : d === 1 ? 'ayer' : 'hace ' + d + ' días';
+  }
+  function nivel(x) {
+    if (x.estado !== 'aprobada') return null;
+    const a = x.actividad || {};
+    const ultimo = Math.max(a.ultimaVisita || 0, a.ultimaAccion || 0);
+    const dias = ultimo ? (Date.now() - ultimo) / 864e5 : Infinity;
+    const actua = (a.cogidos || 0) + (a.ayudas || 0) > 0;
+    if (!a.avisos && !ultimo) return ['gris', '⚪ Sin avisos en su zona'];
+    if (actua && dias <= 14) return ['verde', '🟢 Activa'];
+    if (dias <= 14) return ['amarilla', '🟡 Mira pero no actúa'];
+    return ['roja', '🔴 Inactiva'];
+  }
+  function actividadDe(x) {
+    const nv = nivel(x);
+    if (!nv) return '';
+    const a = x.actividad || {};
+    const desde = D.seguimientoDesde ? new Date(D.seguimientoDesde).toLocaleDateString('es-ES') : '';
+    return `<div class="actividad ${nv[0]}"><b>${nv[1]}</b>
+      <div>👁 Última visita: <b>${haceDias(a.ultimaVisita)}</b> · panel ${a.panel || 0} veces · fichas ${a.fichas || 0} · días con visita (7 d): ${a.dias7 || 0}</div>
+      <div>📨 Avisos en su zona: <b>${a.avisos || 0}</b>${a.avisosSeguidos ? ` · abiertos ${a.abiertos || 0} de ${a.avisosSeguidos} (desde ${desde})` : ''}
+        · cogidos <b>${a.cogidos || 0}</b> · ayudas ${a.ayudas || 0} · novedades ${a.novedades || 0}${a.soltados ? ' · soltados ' + a.soltados : ''}</div>
+      <div class="meta">Última acción: ${haceDias(a.ultimaAccion)}</div></div>`;
+  }
+  function pintarActividadAsoc() {
+    const activas = D.asociaciones.filter(x => x.estado === 'aprobada');
+    const cuenta = { verde: 0, amarilla: 0, roja: 0, gris: 0 };
+    activas.forEach(x => { const nv = nivel(x); if (nv) cuenta[nv[0]]++; });
+    const peores = activas.filter(x => (nivel(x) || [])[0] === 'roja' || (nivel(x) || [])[0] === 'amarilla')
+      .sort((p, q) => Math.max(p.actividad?.ultimaVisita || 0, p.actividad?.ultimaAccion || 0) - Math.max(q.actividad?.ultimaVisita || 0, q.actividad?.ultimaAccion || 0))
+      .slice(0, 12);
+    const desde = D.seguimientoDesde ? new Date(D.seguimientoDesde).toLocaleDateString('es-ES') : 'hoy';
+    $('actividadAsoc').innerHTML = `<div class="semaforo"><span>🟢 ${cuenta.verde} activas</span><span>🟡 ${cuenta.amarilla} solo miran</span>
+        <span>🔴 ${cuenta.roja} inactivas</span><span>⚪ ${cuenta.gris} sin avisos</span></div>
+      ${peores.length ? '<ul class="peores">' + peores.map(x => `<li>${(nivel(x) || [])[1].slice(0, 2)} <b>${esc(x.nombre)}</b> · ${esc(x.provincias.join(', '))} ·
+        última visita ${haceDias(x.actividad?.ultimaVisita)} · avisos ${x.actividad?.avisos || 0} · cogidos ${x.actividad?.cogidos || 0}</li>`).join('') + '</ul>' : '<p class="vacio">Todas las asociaciones con avisos están activas. 🎉</p>'}
+      <p class="vacio">Las visitas se registran desde el ${desde}; las acciones, desde el principio.</p>`;
+  }
+
   /* ---------- Asociaciones */
   const CERRADOS_ASOC = ['Adoptado', 'Pasado a un compañero', 'No localizado', 'Ya no hacía falta', 'No sobrevivió'];
   function casosDe(x) {
@@ -336,7 +390,7 @@
   }
   function pintarAsociaciones() {
     const q = $('buscaAsoc').value.toLowerCase().trim(), est = $('filtroAsoc').value;
-    const lista = D.asociaciones.filter(x => (!est || x.estado === est) &&
+    const lista = D.asociaciones.filter(x => (!est || x.estado === est || (est[0] === '_' && (nivel(x) || [])[0] === est.slice(1))) &&
       (!q || [x.nombre, x.email, x.contacto, x.provincias.join(' '), x.telefono].join(' ').toLowerCase().includes(q)));
     $('cuentaAsoc').textContent = lista.length + ' de ' + D.asociaciones.length + ' asociaciones';
     const nombres = { aprobada: 'Dada de alta', pendiente: 'Pendiente', baja: 'De baja' };
@@ -345,6 +399,7 @@
       return `<div class="tarjeta">
       <div class="titulo"><span>${esc(x.nombre)}</span><span class="chip ${x.estado === 'aprobada' ? 'aprobada' : x.estado === 'baja' ? 'baja' : 'pendiente'}">${nombres[x.estado] || esc(x.estado)}</span></div>
       <div class="meta">${esc(x.contacto)} · se apuntó el ${esc(x.fecha)}</div>
+      ${actividadDe(x)}
       ${casosDe(x)}
       <div>📞 <a href="tel:${esc(tel)}">${esc(x.telefono)}</a> · <a href="https://wa.me/${esc(tel.replace('+', ''))}" target="_blank" rel="noopener">WhatsApp</a></div>
       <div>✉️ <a href="mailto:${esc(x.email)}">${esc(x.email)}</a></div>
@@ -352,7 +407,7 @@
       <div class="meta">🐾 ${esc(x.animales.join(' y '))}${x.ayuda.length ? ' · Ayuda: ' + esc(x.ayuda.join(', ')) : ''}</div>
       ${x.redes ? `<div class="meta">🌐 ${esc(x.redes)}</div>` : ''}${x.comentarios ? `<div class="meta">💬 ${esc(x.comentarios)}</div>` : ''}
       <div class="acciones">${x.estado === 'aprobada'
-        ? `${x.panel ? `<a class="verPanel" href="${esc(x.panel)}" target="_blank" rel="noopener">👁 Ver su panel</a> ` : ''}<button class="exito" data-panel="${esc(x.id)}">Enviar su panel</button> <button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
+        ? `${x.panel ? `<a class="verPanel" href="${esc(x.panel + '&admin=1')}" target="_blank" rel="noopener">👁 Ver su panel</a> ` : ''}<button class="exito" data-panel="${esc(x.id)}">Enviar su panel</button> <button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
         : `<button class="exito" data-accion="aprobar" data-id="${esc(x.id)}">Dar de alta</button>`}</div></div>`;
     }).join('') || '<p class="vacio">No hay asociaciones con esos filtros.</p>';
   }

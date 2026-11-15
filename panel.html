@@ -149,6 +149,7 @@
   }
 
   function lista(id, casos, tipo, vacio) {
+    if (q.get('admin')) casos = casos.map(c => Object.assign({}, c, { ficha: c.ficha + '&admin=1' }));
     $(id).innerHTML = casos.length ? casos.map(c => tarjeta(c, tipo)).join('') : `<div class="vacio">${vacio}</div>`;
   }
 
@@ -156,7 +157,7 @@
     if (!q.get('a') || !q.get('t')) { mostrarError('Este enlace no está completo. Abrid el enlace del correo «Vuestro panel de casos».'); return; }
     $('recargar').disabled = true;
     try {
-      const r = await fetch(URL_APP, { method: 'POST', body: JSON.stringify({ funcion: 'panelAsociacion', datos: { a: q.get('a'), t: q.get('t') } }) })
+      const r = await fetch(URL_APP, { method: 'POST', body: JSON.stringify({ funcion: 'panelAsociacion', datos: { a: q.get('a'), t: q.get('t'), admin: q.get('admin') || '' } }) })
         .then(x => x.json());
       if (!r || !r.ok) throw new Error((r && r.error) || 'No se ha podido cargar el panel.');
       const a = r.asociacion;

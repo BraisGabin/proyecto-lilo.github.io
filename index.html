@@ -1008,7 +1008,7 @@
   /* ---------- Ficha del caso (enlaces de los correos: ?caso=L-0031&a=…&t=… o &chema=…) */
   if (SECCION === 'caso') {
     const credencial = { caso: PARAMS.get('caso'), a: PARAMS.get('a') || '', t: PARAMS.get('t') || '',
-      chema: PARAMS.get('chema') || '' };
+      chema: PARAMS.get('chema') || '', admin: PARAMS.get('admin') || '' };
     const $ = id => document.getElementById(id);
     const casoError = $('casoError'), casoOk = $('casoOk');
     const pintarCaso = (r) => {
@@ -1115,7 +1115,7 @@
       $('casoCarpeta').href = c.carpeta;
     };
     if (credencial.a && credencial.t) {
-      $('casoPanelEnlace').href = 'panel.html?a=' + encodeURIComponent(credencial.a) + '&t=' + encodeURIComponent(credencial.t);
+      $('casoPanelEnlace').href = 'panel.html?a=' + encodeURIComponent(credencial.a) + '&t=' + encodeURIComponent(credencial.t) + (credencial.admin ? '&admin=1' : '');
       $('casoPanel').hidden = false;
     }
     const cargarCaso = () => llamar('verCaso', credencial).then(pintarCaso, err => {
