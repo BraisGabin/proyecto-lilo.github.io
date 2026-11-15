@@ -47,6 +47,8 @@
     .vacio { color: var(--suave); background: var(--tarjeta); border: 1px dashed var(--borde); border-radius: 12px;
       padding: 14px; text-align: center; font-size: 15px; }
     .barra { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--suave); font-size: 13px; }
+    a.guias { font-size: 14px; border: 1px solid var(--acento); color: var(--acento-oscuro); background: #fff6ec; border-radius: 999px;
+      padding: 6px 12px; text-decoration: none; font-weight: 600; margin-right: 4px; white-space: nowrap; }
     button.recargar { font: inherit; font-size: 14px; border: 1px solid var(--borde); background: var(--tarjeta); color: var(--texto);
       border-radius: 999px; padding: 6px 14px; cursor: pointer; }
     details { margin-top: 26px; }
@@ -66,7 +68,7 @@
   </header>
 
   <div id="contenido" hidden>
-    <div class="barra"><span id="actualizado"></span><button class="recargar" id="recargar">↻ Actualizar</button></div>
+    <div class="barra"><span id="actualizado"></span><span><a class="guias" href="guias.html">📺 Vídeos guía</a> <button class="recargar" id="recargar">↻ Actualizar</button></span></div>
     <div class="cifras">
       <div class="cifra" id="cLibres"><b>0</b><span>Libres en vuestra zona</span></div>
       <div class="cifra"><b id="cMios">0</b><span>Los lleváis vosotros</span></div>
@@ -98,7 +100,7 @@
 
     <div class="guardar">
       📌 <b>Guardad este panel</b>: en el móvil, en el menú del navegador elegid «Añadir a pantalla de inicio»; en el
-      ordenador, añadidlo a favoritos. El enlace es solo de vuestra asociación: no lo compartáis fuera de ella.
+      ordenador, añadidlo a favoritos. <a href="guias.html">Mirad los vídeos guía</a> si no sabéis cómo. El enlace es solo de vuestra asociación: no lo compartáis fuera de ella.
     </div>
   </div>
 

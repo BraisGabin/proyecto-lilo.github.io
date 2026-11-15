@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lilo · Vídeos guía</title>
+  <meta name="description" content="Vídeos guía para las asociaciones de Proyecto Lilo: guardar el panel en el móvil u ordenador y cómo usarlo.">
+  <link rel="icon" href="icono-192.png">
+  <link rel="apple-touch-icon" href="icono-180.png">
+  <meta name="theme-color" content="#d9772b">
+  <style>
+    :root { --fondo: #fbf6ef; --tarjeta: #fff; --texto: #2b2420; --suave: #7a6e66; --borde: #e6dccf; --acento: #d9772b; --acento-oscuro: #b45f1d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--fondo); color: var(--texto); font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 980px; margin: 0 auto; padding: 22px 16px 64px; }
+    header { text-align: center; margin-bottom: 8px; }
+    .huella { font-size: 36px; }
+    h1 { font-size: 26px; margin: 2px 0 4px; letter-spacing: -.3px; }
+    .intro { color: var(--suave); margin: 0 auto; max-width: 560px; }
+    .volver { display: inline-block; margin: 14px 0 0; color: var(--acento-oscuro); font-weight: 600; }
+    h2 { font-size: 19px; margin: 30px 0 12px; }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .video { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 16px; padding: 12px; }
+    .video h3 { font-size: 16px; margin: 10px 2px 2px; }
+    .video p { margin: 0 2px; color: var(--suave); font-size: 14px; }
+    video { width: 100%; border-radius: 10px; background: #1d1a18; display: block; }
+    .vertical video { aspect-ratio: 9 / 16; max-height: 70vh; object-fit: contain; }
+    .ancho { grid-column: 1 / -1; }
+    .ancho video { aspect-ratio: 16 / 9; }
+    .principal { border: 2px solid var(--acento); }
+    .etiqueta { display: inline-block; background: #fdebd9; color: var(--acento-oscuro); font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 10px; }
+    .bajar { font-size: 13px; color: var(--acento-oscuro); }
+    footer { text-align: center; color: var(--suave); font-size: 14px; margin-top: 36px; }
+    footer a { color: var(--acento-oscuro); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="huella">🐾</div>
+    <h1>Vídeos guía para asociaciones</h1>
+    <p class="intro">Todo lo que necesitáis para usar Proyecto Lilo: cómo guardar vuestro panel de casos como una app y cómo
+      gestionar cada rescate.</p>
+    <a class="volver" id="volver" href="javascript:history.back()" hidden>← Volver a vuestro panel</a>
+  </header>
+
+  <h2>1 · Cómo usar vuestro panel de casos</h2>
+  <div class="rejilla">
+    <div class="video vertical principal">
+      <span class="etiqueta">Empezad por aquí</span>
+      <video controls playsinline preload="metadata" poster="videos/usar-panel.jpg" src="videos/usar-panel.mp4"></video>
+      <h3>Coger un caso, contar cómo va y ayudar a otras asociaciones</h3>
+      <p>2 min · Casos libres, «Vamos nosotros», estado, fotos y vídeos, «No podemos ir», «Podemos ayudar» y cerrar el caso.</p>
+    </div>
+  </div>
+
+  <h2>2 · Guardad el panel para tenerlo siempre a mano</h2>
+  <div class="rejilla">
+    <div class="video vertical">
+      <video controls playsinline preload="metadata" poster="videos/guardar-iphone.jpg" src="videos/guardar-iphone.mp4"></video>
+      <h3>📱 iPhone</h3>
+      <p>Con Safari: Compartir → «Añadir a pantalla de inicio».</p>
+    </div>
+    <div class="video vertical">
+      <video controls playsinline preload="metadata" poster="videos/guardar-android.jpg" src="videos/guardar-android.mp4"></video>
+      <h3>🤖 Android</h3>
+      <p>Con Chrome: ⋮ → «Añadir a pantalla de inicio».</p>
+    </div>
+    <div class="video ancho">
+      <video controls playsinline preload="metadata" poster="videos/guardar-windows.jpg" src="videos/guardar-windows.mp4"></video>
+      <h3>💻 Ordenador (Windows)</h3>
+      <p>En favoritos o como icono en el escritorio, con Chrome o Edge.</p>
+    </div>
+  </div>
+
+  <footer>
+    ¿Dudas? Escribidnos a <a href="mailto:chemaysumanada@gmail.com">chemaysumanada@gmail.com</a><br>
+    Chema y su manada · Proyecto Lilo<br>
+    <small>Música: «Garden Music», Kevin MacLeod (incompetech.com) · CC BY 4.0</small>
+  </footer>
+</main>
+<script>
+  // Solo un vídeo suena a la vez.
+  document.querySelectorAll('video').forEach(v => v.addEventListener('play', () =>
+    document.querySelectorAll('video').forEach(o => { if (o !== v) o.pause(); })));
+  if (document.referrer && /panel\.html/.test(document.referrer)) document.getElementById('volver').hidden = false;
+</script>
+</body>
+</html>
