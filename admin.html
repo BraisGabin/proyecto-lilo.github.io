@@ -85,6 +85,46 @@
     .leaflet-popup-content a { color: var(--acento-oscuro); }
     .leaflet-popup-content b { font-size: 15px; }
     [hidden] { display: none !important; }
+    /* ---- Cómo funciona */
+    #como h2 { margin: 6px 0 4px; }
+    .cf-intro { color: var(--suave); margin: 0 0 12px; max-width: 760px; }
+    .cf-indice { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+    .cf-indice a { font-size: 13.5px; padding: 5px 11px; border-radius: 999px; background: var(--tarjeta); border: 1px solid var(--borde); color: var(--texto); text-decoration: none; }
+    .cf-h { font-size: 18px; margin: 26px 0 10px; scroll-margin-top: 110px; }
+    .cf-mapa { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; gap: 10px; align-items: start; }
+    .cf-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    .cf-tit { font-weight: 800; font-size: 14.5px; text-align: center; padding: 4px 0; }
+    .cf-tit small { display: block; font-weight: 500; color: var(--suave); font-size: 12px; }
+    .cf-flecha { align-self: center; font-size: 22px; color: var(--acento, #d9772b); }
+    .cf-caja { background: var(--tarjeta); border: 1px solid var(--borde); border-left: 4px solid #ccc; border-radius: 12px; padding: 8px 10px; font-size: 13.5px; line-height: 1.35; }
+    .cf-caja b { display: block; font-size: 14px; }
+    .cf-caja span { color: var(--suave); }
+    .cf-caja.persona { border-left-color: #d9772b; }
+    .cf-caja.web { border-left-color: #3b7dd8; }
+    .cf-caja.web.secreto { border-left-color: #8a4fd6; background: #f7f1fd; }
+    .cf-caja.motor { border-left-color: #3f8a55; }
+    .cf-caja.datos { border-left-color: #c99212; }
+    @media (max-width: 900px) { .cf-mapa { grid-template-columns: 1fr; } .cf-flecha { transform: rotate(90deg); justify-self: center; } }
+    .cf-nota { color: var(--suave); font-size: 14px; margin: 10px 0 0; }
+    .cf-pasos { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    .cf-pasos li { display: flex; gap: 12px; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 10px 12px; font-size: 14.5px; }
+    .cf-pasos .n { flex: 0 0 28px; height: 28px; border-radius: 50%; background: #d9772b; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .cf-pasos small { display: block; color: var(--suave); margin-top: 2px; }
+    .cf-estados { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .cf-estados .e { padding: 6px 12px; border-radius: 999px; font-weight: 700; font-size: 14px; border: 1px solid var(--borde); background: var(--tarjeta); }
+    .cf-estados .e small { display: block; font-weight: 400; font-size: 11.5px; color: var(--suave); }
+    .cf-estados .nuevo { background: #fdeeec; border-color: #f1c3bc; }
+    .cf-estados .marcha { background: #fdf6e3; border-color: #ecd9a4; }
+    .cf-estados .salvo { background: #eef7f1; border-color: #bfe0ca; }
+    .cf-estados .fin { background: #3f8a55; color: #fff; border-color: #3f8a55; }
+    .cf-estados .fl { color: var(--suave); }
+    .cf-tabla { overflow-x: auto; }
+    .cf-tabla table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--tarjeta); border-radius: 12px; overflow: hidden; }
+    .cf-tabla th, .cf-tabla td { border-bottom: 1px solid var(--borde); padding: 8px 10px; text-align: left; vertical-align: top; }
+    .cf-tabla th { background: #f6efe5; font-size: 13px; }
+    .cf-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+    .cf-lista { padding-left: 0; list-style: none; display: grid; gap: 8px; margin: 0; }
+    .cf-lista li { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 10px 12px; font-size: 14.5px; }
   </style>
 </head>
 <body>
@@ -101,6 +141,7 @@
     <button data-s="asociaciones">Asociaciones</button>
     <button data-s="actividad">Actividad</button>
     <button data-s="herramientas">Herramientas</button>
+    <button data-s="como">🗺️ Cómo funciona</button>
   </nav>
 </header>
 <main>
@@ -157,6 +198,144 @@
 
   <section id="actividad" hidden>
     <div class="bloque actividad"><h3>Últimos movimientos en los casos</h3><ul id="listaActividad"></ul></div>
+  </section>
+
+  <section id="como" hidden>
+    <h2>🗺️ Cómo funciona Proyecto Lilo</h2>
+    <p class="cf-intro">Todo el sistema en una página, para que cualquiera que llegue nuevo lo entienda. De arriba abajo: quién participa,
+      qué piezas hay, cómo va un rescate, quién ve qué, qué pasa solo y cómo se protege.</p>
+
+    <nav class="cf-indice">
+      <a href="#cf-mapa">1 · Mapa general</a><a href="#cf-rescate">2 · Un rescate paso a paso</a><a href="#cf-estados">3 · Estados</a>
+      <a href="#cf-roles">4 · Quién ve qué</a><a href="#cf-piezas">5 · Piezas y dónde están</a><a href="#cf-auto">6 · Automático</a>
+      <a href="#cf-seguridad">7 · Seguridad y copias</a>
+    </nav>
+
+    <!-- 1 · MAPA GENERAL -->
+    <h3 class="cf-h" id="cf-mapa">1 · Mapa general</h3>
+    <div class="cf-mapa">
+      <div class="cf-col">
+        <div class="cf-tit">👥 Personas</div>
+        <div class="cf-caja persona"><b>🙋 Quien avisa</b><span>Cualquier seguidor que ve un gato o perro en apuros</span></div>
+        <div class="cf-caja persona"><b>🏠 Asociaciones</b><span>Protectoras de cada provincia. Se apuntan y Chema las aprueba</span></div>
+        <div class="cf-caja persona"><b>🐾 Chema (admin)</b><span>Control total: ve todo, asigna, da de alta y de baja</span></div>
+      </div>
+      <div class="cf-flecha">➜</div>
+      <div class="cf-col">
+        <div class="cf-tit">🌐 Web pública <small>(GitHub Pages)</small></div>
+        <div class="cf-caja web"><b>Formulario de aviso</b><span>5 pasos · ubicación · fotos</span></div>
+        <div class="cf-caja web"><b>Asistencia</b><span>Preguntas y respuestas + «Pregúntale a Chema»</span></div>
+        <div class="cf-caja web"><b>Alta de asociaciones</b><span>Provincias y animales</span></div>
+        <div class="cf-caja web"><b>Ficha del caso</b><span>«Vamos nosotros», estado, fotos, ayuda</span></div>
+        <div class="cf-caja web"><b>Panel de cada asociación</b><span>Casos libres, suyos y de su zona</span></div>
+        <div class="cf-caja web"><b>Vídeos guía</b><span>Guardar el panel y usarlo</span></div>
+        <div class="cf-caja web secreto"><b>🔒 Este panel (admin)</b><span>Solo con tu enlace secreto</span></div>
+      </div>
+      <div class="cf-flecha">➜</div>
+      <div class="cf-col">
+        <div class="cf-tit">⚙️ Motor <small>(Google Apps Script)</small></div>
+        <div class="cf-caja motor"><b>Recibe y comprueba</b><span>Avisos, altas, preguntas y acciones de las fichas</span></div>
+        <div class="cf-caja motor"><b>Decide a quién avisar</b><span>Asociaciones aprobadas de esa provincia y ese animal</span></div>
+        <div class="cf-caja motor"><b>Controla permisos</b><span>Cada enlace sabe quién eres y qué puedes hacer</span></div>
+        <div class="cf-caja motor"><b>Manda los correos</b><span>Avisos, bienvenida, recordatorios e informes</span></div>
+        <div class="cf-caja motor"><b>Tareas automáticas</b><span>Cada hora y cada lunes</span></div>
+      </div>
+      <div class="cf-flecha">➜</div>
+      <div class="cf-col">
+        <div class="cf-tit">🗄️ Datos <small>(tu Google Drive)</small></div>
+        <div class="cf-caja datos"><b>📊 Hoja «Registro»</b><span>Pestañas Avisos, Historial y Resumen</span></div>
+        <div class="cf-caja datos"><b>📁 Carpetas de rescates</b><span>Comunidad › Provincia › Caso, con el aviso, las fotos y «2 · Seguimiento»</span></div>
+        <div class="cf-caja datos"><b>📁 Asociaciones</b><span>Una ficha por asociación</span></div>
+        <div class="cf-caja datos"><b>🔑 Propiedades del script</b><span>Registro de asociaciones, responsables, claves y actividad</span></div>
+        <div class="cf-caja datos"><b>✉️ Correo</b><span>Sale desde la cuenta de Google del proyecto</span></div>
+      </div>
+    </div>
+    <p class="cf-nota">📣 Aparte está el <b>canal de WhatsApp</b>: comunicados de Chema a todas las asociaciones. Es de solo lectura y nadie ve el número de los demás.</p>
+
+    <!-- 2 · UN RESCATE PASO A PASO -->
+    <h3 class="cf-h" id="cf-rescate">2 · Un rescate, paso a paso</h3>
+    <ol class="cf-pasos">
+      <li><span class="n">1</span><div><b>Alguien avisa</b> desde la web en 5 pasos: qué pasa, dónde está (puede compartir su ubicación), cómo es, la situación y sus datos.
+        <small>Si marca «gato en el motor de un coche», el aviso pasa solo a Emergencia y le salen instrucciones.</small></div></li>
+      <li><span class="n">2</span><div><b>Se crea el caso</b> con número (L-0001, L-0002…), su carpeta en Drive (aviso + fotos) y una fila en la hoja.
+        <small>Quien avisa recibe una confirmación si dejó su correo.</small></div></li>
+      <li><span class="n">3</span><div><b>Llegan los correos:</b> a Chema, con todo, y a las asociaciones aprobadas de esa provincia y ese animal, <i>sin</i> los datos de quien avisa.
+        <small>Cada asociación recibe su enlace personal a la ficha y a su panel.</small></div></li>
+      <li><span class="n">4</span><div><b>Una asociación pulsa «Vamos nosotros».</b> El caso pasa a ser suyo y ya ve el contacto de quien avisó.
+        <small>El resto de la zona recibe aviso de que ya está cogido, para no ir dos veces. Además, tiene permiso para subir vídeos a «2 · Seguimiento».</small></div></li>
+      <li><span class="n">5</span><div><b>Cuenta cómo va:</b> cambia el estado, escribe la novedad, sube fotos y marca si se pueden usar en redes.
+        <small>Todo queda en el historial del caso. Otra asociación puede ofrecer ayuda con «Podemos ayudar»: acogida, transporte, veterinario…</small></div></li>
+      <li><span class="n">6</span><div><b>Si no puede ir,</b> pulsa «No podemos ir»: el caso vuelve a estar libre y se avisa a la zona.
+        <small>Tú también puedes asignarlo a mano a cualquier asociación desde la pestaña Casos.</small></div></li>
+      <li><span class="n">7</span><div><b>Cuando el animal está a salvo,</b> a quien avisó le llega un correo (si lo pidió).
+        <small>El caso se cierra con su estado final: Adoptado, En acogida, No localizado…</small></div></li>
+      <li><span class="n">8</span><div><b>Si se queda parado,</b> el sistema insiste solo: a las 48 h sin novedades escribe a la asociación, y a ti te manda un resumen de los casos atascados.</div></li>
+    </ol>
+
+    <!-- 3 · ESTADOS -->
+    <h3 class="cf-h" id="cf-estados">3 · Estados de un caso</h3>
+    <div class="cf-estados">
+      <span class="e nuevo">Nuevo<small>nadie lo ha cogido</small></span><span class="fl">→</span>
+      <span class="e marcha">Asignado</span><span class="fl">→</span><span class="e marcha">En camino</span><span class="fl">→</span>
+      <span class="e salvo">Rescatado</span><span class="fl">→</span><span class="e salvo">En veterinario</span><span class="fl">→</span>
+      <span class="e salvo">En acogida</span><span class="fl">→</span><span class="e salvo">En adopción</span><span class="fl">→</span><span class="e fin">Adoptado 🎉</span>
+    </div>
+    <p class="cf-nota">Otros finales: <b>Pasado a un compañero</b> · <b>No localizado</b> · <b>Ya no hacía falta</b> · <b>No sobrevivió</b>.
+      En verde, los estados «a salvo»: al llegar a uno de ellos, se avisa a quien dio el aviso.</p>
+
+    <!-- 4 · QUIÉN VE QUÉ -->
+    <h3 class="cf-h" id="cf-roles">4 · Quién ve qué y quién puede hacer qué</h3>
+    <div class="cf-tabla"><table>
+      <thead><tr><th></th><th>Quien avisa</th><th>Asociación de la zona</th><th>Asociación responsable</th><th>Chema</th></tr></thead>
+      <tbody>
+        <tr><td>Ver el aviso</td><td>Su confirmación</td><td>✅ sin datos de contacto</td><td>✅ completo</td><td>✅ completo</td></tr>
+        <tr><td>Contacto de quien avisa</td><td>—</td><td>❌</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Quedarse el caso</td><td>—</td><td>✅ si está libre</td><td>—</td><td>✅ asignar a quien quiera</td></tr>
+        <tr><td>Cambiar estado y subir fotos</td><td>—</td><td>❌</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Ofrecer ayuda</td><td>—</td><td>✅</td><td>—</td><td>—</td></tr>
+        <tr><td>Soltar el caso</td><td>—</td><td>—</td><td>✅</td><td>✅</td></tr>
+        <tr><td>Panel de casos</td><td>—</td><td>✅ el suyo</td><td>✅ el suyo</td><td>✅ este panel y el de cualquiera</td></tr>
+        <tr><td>Dar de alta o de baja asociaciones</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+      </tbody>
+    </table></div>
+    <p class="cf-nota">🔗 <b>Todo va por enlaces secretos</b>, no hay usuarios ni contraseñas. Cada asociación tiene su clave, Chema tiene la suya para las fichas
+      y este panel otra distinta. Al dar de baja una asociación, sus enlaces dejan de funcionar.</p>
+
+    <!-- 5 · PIEZAS -->
+    <h3 class="cf-h" id="cf-piezas">5 · Piezas y dónde están</h3>
+    <div class="cf-tabla"><table>
+      <thead><tr><th>Pieza</th><th>Dónde vive</th><th>Para qué</th></tr></thead>
+      <tbody>
+        <tr><td><b>Web</b>: index.html (aviso, asistencia, asociaciones, ficha), panel.html, guias.html, admin.html</td><td>GitHub · repositorio Proyecto-Lilo/proyecto-lilo.github.io (GitHub Pages)</td><td>Todo lo que ve la gente. Gratis, rápido y abre dentro de Instagram y TikTok</td></tr>
+        <tr><td><b>Motor</b>: Codigo.gs</td><td>Google Apps Script, proyecto «Proyecto Lilo» (aplicación web)</td><td>Recibe las peticiones de la web, guarda, decide y manda correos</td></tr>
+        <tr><td><b>Registro</b> (hoja de cálculo)</td><td>Drive › Proyecto Lilo</td><td>Avisos: una fila por caso · Historial: cada acción · Resumen: cifras</td></tr>
+        <tr><td><b>Carpetas de rescates</b></td><td>Drive › Proyecto Lilo › Rescates › Comunidad › Provincia</td><td>Aviso en texto, fotos e «Historial del caso.txt»; vídeos en «2 · Seguimiento»</td></tr>
+        <tr><td><b>Asociaciones</b></td><td>Drive › Proyecto Lilo › Asociaciones, más las propiedades del script</td><td>Ficha de cada una y su registro (estado, provincias, claves)</td></tr>
+        <tr><td><b>Vídeos guía</b></td><td>Web (carpeta videos) + copia en Drive › Vídeos guía</td><td>Enseñar a las asociaciones</td></tr>
+        <tr><td><b>Copias del código</b></td><td>Drive › Proyecto Lilo › Formulario web (código), con LEEME.md</td><td>Historial de versiones y cómo volver atrás</td></tr>
+        <tr><td><b>Canal de WhatsApp</b></td><td>WhatsApp Business de Chema</td><td>Comunicados a las asociaciones</td></tr>
+      </tbody>
+    </table></div>
+
+    <!-- 6 · AUTOMÁTICO -->
+    <h3 class="cf-h" id="cf-auto">6 · Lo que pasa solo</h3>
+    <div class="cf-auto">
+      <div class="cf-caja motor"><b>⏰ Cada hora · revisarCasos</b><span>Casos sin novedades en 48 h: correo a la asociación. Casos sin coger en 24 h o atascados: un resumen a Chema.</span></div>
+      <div class="cf-caja motor"><b>📅 Cada lunes a las 9 · informeSemanal</b><span>Actividad de las asociaciones (🟢 🟡 🔴 ⚪) y casos de la semana, solo a Chema y a gestión.</span></div>
+      <div class="cf-caja motor"><b>👁️ En cada visita · seguimiento discreto</b><span>Cuándo abre cada asociación su panel y las fichas. Lo ves en Asociaciones y en el informe; ellas no lo saben. Tus visitas no cuentan.</span></div>
+      <div class="cf-caja motor"><b>⚡ Memoria rápida</b><span>El aviso y las fotos de cada caso se guardan un rato para que la ficha abra al momento. Tu panel abre con los últimos datos y se pone al día solo.</span></div>
+    </div>
+
+    <!-- 7 · SEGURIDAD -->
+    <h3 class="cf-h" id="cf-seguridad">7 · Seguridad y copias</h3>
+    <ul class="cf-lista">
+      <li>🔒 <b>Este panel</b> solo abre con tu enlace secreto, que llegó a la cuenta de gestión. No lo compartas: quien lo tenga ve todo.</li>
+      <li>🧑‍🤝‍🧑 <b>Datos de quien avisa</b>: solo los ven la asociación responsable y Chema. El resto de la zona recibe el aviso sin ellos.</li>
+      <li>📁 <b>Drive</b>: las asociaciones ven en modo lectura la carpeta de sus provincias. Solo pueden subir archivos a «2 · Seguimiento» de los casos que llevan.</li>
+      <li>↩️ <b>Siempre hay una versión anterior</b> a la que volver: versiones del motor en Apps Script (Implementar › Gestionar implementaciones), etiquetas en GitHub y copias en Drive.</li>
+      <li>🧪 <b>Pruebas</b>: se hacen con la provincia «Fuera de España», que no avisa a ninguna asociación, y luego se borran.</li>
+      <li>💶 <b>Coste: 0 €.</b> GitHub Pages, Google Apps Script y Drive son gratis con los límites de Google (unos 100 correos al día con Gmail normal y 1.500 con Workspace).</li>
+    </ul>
   </section>
 
   <section id="herramientas" hidden>
@@ -228,7 +407,7 @@
   }
 
   /* ---------- Pestañas */
-  const SECCIONES = { resumen: 'resumen', mapa: 'mapa-sec', casos: 'casos', asociaciones: 'asociaciones', actividad: 'actividad', herramientas: 'herramientas' };
+  const SECCIONES = { resumen: 'resumen', mapa: 'mapa-sec', casos: 'casos', asociaciones: 'asociaciones', actividad: 'actividad', herramientas: 'herramientas', como: 'como' };
   function ir(s) {
     Object.entries(SECCIONES).forEach(([k, id]) => $(id).hidden = !D || k !== s);
     document.querySelectorAll('#pestanas button').forEach(b => b.classList.toggle('activa', b.dataset.s === s));
