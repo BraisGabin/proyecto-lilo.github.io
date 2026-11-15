@@ -51,6 +51,10 @@
     .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; }
     .tarjeta .titulo { font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
     .tarjeta .meta { color: var(--suave); font-size: 13px; }
+    .casosAsoc { margin-top: 6px; font-size: 14px; }
+    .casosAsoc summary { cursor: pointer; font-weight: 600; color: var(--acento-oscuro, #b45f1d); }
+    .casosAsoc ul { margin: 6px 0 0; padding-left: 18px; }
+    .casosAsoc li { margin: 4px 0; overflow-wrap: anywhere; }
     .tarjeta .acciones { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
     .chip { font-size: 12px; border-radius: 999px; padding: 2px 8px; border: 1px solid var(--borde); white-space: nowrap; }
     .chip.Nuevo { background: #fdecea; color: #7a2418; border-color: #f3c4bd; }
@@ -301,6 +305,18 @@
   });
 
   /* ---------- Asociaciones */
+  const CERRADOS_ASOC = ['Adoptado', 'Pasado a un compañero', 'No localizado', 'Ya no hacía falta', 'No sobrevivió'];
+  function casosDe(x) {
+    const suyos = D.casos.filter(c => c.responsable && c.responsable.trim().toLowerCase() === x.nombre.trim().toLowerCase());
+    if (!suyos.length) return '<div class="meta">📂 No lleva ningún caso</div>';
+    const abiertos = suyos.filter(c => !CERRADOS_ASOC.includes(c.estado));
+    const orden = [...abiertos, ...suyos.filter(c => CERRADOS_ASOC.includes(c.estado))];
+    return `<details class="casosAsoc"><summary>📂 Casos que lleva: ${suyos.length} (${abiertos.length} abiertos)</summary>
+      <ul>${orden.map(c => `<li><a href="${esc(c.ficha)}" target="_blank" rel="noopener"><b>${esc(c.caso)}</b></a>
+        ${c.animal === 'Perro' ? '🐕' : '🐈'} ${esc(c.municipio)} (${esc(c.provincia)}) ·
+        <span class="chip ${CERRADOS_ASOC.includes(c.estado) ? '' : 'aprobada'}">${esc(c.estado)}</span>
+        <span class="meta">· aviso ${esc(c.fecha)}${c.novedad ? ' · última novedad ' + esc(c.novedad) : ''}</span></li>`).join('')}</ul></details>`;
+  }
   function pintarAsociaciones() {
     const q = $('buscaAsoc').value.toLowerCase().trim(), est = $('filtroAsoc').value;
     const lista = D.asociaciones.filter(x => (!est || x.estado === est) &&
@@ -317,6 +333,7 @@
       <div class="meta">📍 ${esc(x.provincias.join(', '))}</div>
       <div class="meta">🐾 ${esc(x.animales.join(' y '))}${x.ayuda.length ? ' · Ayuda: ' + esc(x.ayuda.join(', ')) : ''}</div>
       ${x.redes ? `<div class="meta">🌐 ${esc(x.redes)}</div>` : ''}${x.comentarios ? `<div class="meta">💬 ${esc(x.comentarios)}</div>` : ''}
+      ${casosDe(x)}
       <div class="acciones">${x.estado === 'aprobada'
         ? `<button class="exito" data-panel="${esc(x.id)}">Enviar su panel</button> <button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
         : `<button class="exito" data-accion="aprobar" data-id="${esc(x.id)}">Dar de alta</button>`}</div></div>`;
