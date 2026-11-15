@@ -1119,7 +1119,18 @@
       $('casoPanelEnlace').href = 'panel.html?a=' + encodeURIComponent(credencial.a) + '&t=' + encodeURIComponent(credencial.t) + (credencial.admin ? '&admin=1' : '');
       $('casoPanel').hidden = false;
     }
-    const cargarCaso = () => llamar('verCaso', credencial).then(pintarCaso, err => {
+    // Para que abra al instante: se enseña lo último que se vio de este caso en este navegador y se actualiza por detrás.
+    const claveFicha = 'lilo_ficha_' + credencial.caso + '_' + (credencial.a || (credencial.chema ? 'chema' : ''));
+    const guardarFicha = r => { try { localStorage.setItem(claveFicha, JSON.stringify(r)); } catch (e) {} };
+    try { const g = JSON.parse(localStorage.getItem(claveFicha) || 'null'); if (g && g.ok) pintarCaso(g); } catch (e) {}
+    let tocado = false;
+    $('bloqueEstado').addEventListener('input', () => { tocado = true; });
+    $('bloqueEstado').addEventListener('change', () => { tocado = true; });
+    const cargarCaso = () => llamar('verCaso', credencial).then(r => {
+      const sel = $('selEstado').value, redes = $('redes').checked;
+      pintarCaso(r); guardarFicha(r);
+      if (tocado) { $('selEstado').value = sel; $('redes').checked = redes; }
+    }, err => {
       $('casoCargando').hidden = true;
       casoError.textContent = (err && err.message) || 'No se pudo abrir el caso.';
     });
@@ -1129,7 +1140,8 @@
       const texto = boton.textContent;
       boton.disabled = true; boton.textContent = 'Guardando…';
       try {
-        pintarCaso(await llamarUnaVez('accionCaso', Object.assign({}, credencial, datos)));
+        const r = await llamarUnaVez('accionCaso', Object.assign({}, credencial, datos));
+        pintarCaso(r); guardarFicha(r);
         casoOk.textContent = mensaje;
       } catch (err) {
         casoError.textContent = (err && err.message) || 'No se pudo guardar. Inténtalo otra vez.';
