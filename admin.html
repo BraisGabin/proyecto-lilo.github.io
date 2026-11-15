@@ -52,6 +52,13 @@
     .tarjeta .titulo { font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
     .tarjeta .meta { color: var(--suave); font-size: 13px; }
     .casosAsoc { margin-top: 6px; font-size: 14px; }
+    .resumenCasos { margin-top: 8px; padding: 8px 10px; background: #f8f3ec; border-radius: 10px; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 14px; }
+    .resumenCasos.vacio0 { color: var(--suave); }
+    .resumenCasos .num { font-weight: 600; }
+    .resumenCasos .num.abiertos { color: #b45f1d; }
+    .resumenCasos .num.ayuda { color: #1f5fa8; }
+    .resumenCasos .meta { flex-basis: 100%; }
+    a.verPanel { display: inline-block; text-decoration: none; background: #fff; color: #b45f1d; border: 1px solid #d9772b; border-radius: 10px; padding: 8px 12px; font-weight: 700; font-size: 14px; }
     .casosAsoc summary { cursor: pointer; font-weight: 600; color: var(--acento-oscuro, #b45f1d); }
     .casosAsoc ul { margin: 6px 0 0; padding-left: 18px; }
     .casosAsoc li { margin: 4px 0; overflow-wrap: anywhere; }
@@ -307,14 +314,24 @@
   /* ---------- Asociaciones */
   const CERRADOS_ASOC = ['Adoptado', 'Pasado a un compañero', 'No localizado', 'Ya no hacía falta', 'No sobrevivió'];
   function casosDe(x) {
-    const suyos = D.casos.filter(c => c.responsable && c.responsable.trim().toLowerCase() === x.nombre.trim().toLowerCase());
-    if (!suyos.length) return '<div class="meta">📂 No lleva ningún caso</div>';
+    const suyos = D.casos.filter(c => c.respId ? c.respId === x.id
+      : (c.responsable && c.responsable.trim().toLowerCase() === x.nombre.trim().toLowerCase()));
+    if (!suyos.length) return '<div class="resumenCasos vacio0">📂 No lleva ningún caso</div>';
     const abiertos = suyos.filter(c => !CERRADOS_ASOC.includes(c.estado));
+    const cerrados = suyos.length - abiertos.length;
+    const salvo = suyos.filter(c => ['Rescatado', 'En veterinario', 'En acogida', 'En adopción', 'Adoptado'].includes(c.estado)).length;
+    const ofertas = abiertos.reduce((n, c) => n + (c.ayudas || 0), 0);
+    const ultimo = abiertos[0] || suyos[0];
     const orden = [...abiertos, ...suyos.filter(c => CERRADOS_ASOC.includes(c.estado))];
-    return `<details class="casosAsoc"><summary>📂 Casos que lleva: ${suyos.length} (${abiertos.length} abiertos)</summary>
+    return `<div class="resumenCasos"><span class="num ${abiertos.length ? 'abiertos' : ''}">📂 ${abiertos.length} abiertos</span>
+        <span class="num">✅ ${cerrados} cerrados</span><span class="num">💚 ${salvo} a salvo</span>
+        ${ofertas ? `<span class="num ayuda">🤝 ${ofertas} ofertas de ayuda</span>` : ''}
+        <div class="meta">Último: ${esc(ultimo.caso)} · ${esc(ultimo.municipio)} · ${esc(ultimo.estado)}</div></div>
+      <details class="casosAsoc"><summary>Ver sus ${suyos.length} casos</summary>
       <ul>${orden.map(c => `<li><a href="${esc(c.ficha)}" target="_blank" rel="noopener"><b>${esc(c.caso)}</b></a>
         ${c.animal === 'Perro' ? '🐕' : '🐈'} ${esc(c.municipio)} (${esc(c.provincia)}) ·
         <span class="chip ${CERRADOS_ASOC.includes(c.estado) ? '' : 'aprobada'}">${esc(c.estado)}</span>
+        ${c.ayudas ? `<span class="chip">🤝 ${c.ayudas}</span>` : ''}
         <span class="meta">· aviso ${esc(c.fecha)}${c.novedad ? ' · última novedad ' + esc(c.novedad) : ''}</span></li>`).join('')}</ul></details>`;
   }
   function pintarAsociaciones() {
@@ -328,14 +345,14 @@
       return `<div class="tarjeta">
       <div class="titulo"><span>${esc(x.nombre)}</span><span class="chip ${x.estado === 'aprobada' ? 'aprobada' : x.estado === 'baja' ? 'baja' : 'pendiente'}">${nombres[x.estado] || esc(x.estado)}</span></div>
       <div class="meta">${esc(x.contacto)} · se apuntó el ${esc(x.fecha)}</div>
+      ${casosDe(x)}
       <div>📞 <a href="tel:${esc(tel)}">${esc(x.telefono)}</a> · <a href="https://wa.me/${esc(tel.replace('+', ''))}" target="_blank" rel="noopener">WhatsApp</a></div>
       <div>✉️ <a href="mailto:${esc(x.email)}">${esc(x.email)}</a></div>
       <div class="meta">📍 ${esc(x.provincias.join(', '))}</div>
       <div class="meta">🐾 ${esc(x.animales.join(' y '))}${x.ayuda.length ? ' · Ayuda: ' + esc(x.ayuda.join(', ')) : ''}</div>
       ${x.redes ? `<div class="meta">🌐 ${esc(x.redes)}</div>` : ''}${x.comentarios ? `<div class="meta">💬 ${esc(x.comentarios)}</div>` : ''}
-      ${casosDe(x)}
       <div class="acciones">${x.estado === 'aprobada'
-        ? `<button class="exito" data-panel="${esc(x.id)}">Enviar su panel</button> <button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
+        ? `${x.panel ? `<a class="verPanel" href="${esc(x.panel)}" target="_blank" rel="noopener">👁 Ver su panel</a> ` : ''}<button class="exito" data-panel="${esc(x.id)}">Enviar su panel</button> <button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
         : `<button class="exito" data-accion="aprobar" data-id="${esc(x.id)}">Dar de alta</button>`}</div></div>`;
     }).join('') || '<p class="vacio">No hay asociaciones con esos filtros.</p>';
   }

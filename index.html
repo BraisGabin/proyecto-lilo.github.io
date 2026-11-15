@@ -146,6 +146,13 @@
     .peligro { background: transparent; color: var(--rojo); border: 1px solid var(--rojo); font-size: 15px; padding: 11px; }
     .peligro:hover { background: #fdecea; }
     fieldset { min-width: 0; max-width: 100%; box-sizing: border-box; }
+    .ofertas { background: #eef5fd; border: 1px solid #c9dcf3; border-radius: 12px; padding: 12px 14px; margin: 0 0 16px; }
+    .ofertas h3 { margin: 0 0 8px; font-size: 16px; color: #1f5fa8; }
+    .ofertas .oferta { border-top: 1px solid #d6e5f6; padding: 8px 0 4px; font-size: 15px; overflow-wrap: anywhere; }
+    .ofertas .oferta:first-of-type { border-top: 0; }
+    .ofertas .quien { font-weight: 700; }
+    .ofertas .cuando { color: var(--suave); font-size: 13px; }
+    .ofertas .contacto a { margin-right: 12px; }
     .aviso-texto { box-sizing: border-box; width: 100%; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; font: 14px/1.5 ui-monospace, Menlo, monospace; background: #fffaf3;
       border: 1px solid var(--borde); border-radius: 10px; padding: 12px; max-height: 420px; overflow: auto; }
     .historial { list-style: none; margin: 0; padding: 0; }
@@ -451,6 +458,7 @@
       <div class="chips" id="casoChips"></div>
       <div class="estado-caja" id="casoEstado"></div>
       <p class="yo" id="casoYo"></p>
+      <div class="ofertas" id="casoAyudas" hidden></div>
 
       <fieldset id="bloqueQuedarse" hidden>
         <legend id="tituloQuedarse">¿Podéis ir vosotros?</legend>
@@ -1080,6 +1088,29 @@
         galeria.appendChild(rejilla);
       });
       if (!alguno) galeria.appendChild(crear('p', 'pista', 'Todavía no hay fotos ni vídeos.'));
+      const ofertas = c.ayudas || [], cajaOf = $('casoAyudas');
+      cajaOf.hidden = !ofertas.length;
+      cajaOf.innerHTML = '';
+      if (ofertas.length) {
+        cajaOf.appendChild(crear('h3', '', '🤝 Ofrecen ayuda en este caso (' + ofertas.length + ')'));
+        ofertas.forEach(o => {
+          const d = crear('div', 'oferta');
+          d.appendChild(crear('div', 'quien', o.nombre));
+          d.appendChild(crear('div', '', '«' + o.texto + '»'));
+          d.appendChild(crear('div', 'cuando', o.fecha || ''));
+          if (o.email || o.telefono) {
+            const k = crear('div', 'contacto');
+            const tel = String(o.telefono || '').replace(/[^\d+]/g, '');
+            if (tel) {
+              const a1 = crear('a', '', '📞 ' + o.telefono); a1.href = 'tel:' + tel; k.appendChild(a1);
+              const a2 = crear('a', '', 'WhatsApp'); a2.href = 'https://wa.me/' + (tel.startsWith('+') ? tel.slice(1) : (tel.length === 9 ? '34' + tel : tel)); a2.target = '_blank'; k.appendChild(a2);
+            }
+            if (o.email) { const a3 = crear('a', '', '✉️ ' + o.email); a3.href = 'mailto:' + o.email; k.appendChild(a3); }
+            d.appendChild(k);
+          }
+          cajaOf.appendChild(d);
+        });
+      }
       $('casoAviso').textContent = c.aviso || 'No hemos podido leer el aviso.';
       $('casoCarpeta').href = c.carpeta;
     };

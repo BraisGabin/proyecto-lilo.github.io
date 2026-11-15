@@ -37,6 +37,7 @@
     .chips { display: flex; flex-wrap: wrap; gap: 6px; grid-column: 1 / -1; }
     .chip { font-size: 12.5px; padding: 2px 9px; border-radius: 999px; background: #f3ebe0; }
     .chip.rojo { background: #fdecea; color: var(--rojo); font-weight: 600; }
+    .chip.ayuda { background: #e7f0fb; color: #1f5fa8; font-weight: 700; }
     .chip.verde { background: #e8f3ec; color: var(--verde); font-weight: 600; }
     a.boton { display: inline-block; text-decoration: none; text-align: center; background: var(--acento); color: #fff;
       font-weight: 700; border-radius: 10px; padding: 9px 14px; font-size: 15px; white-space: nowrap; }
@@ -84,6 +85,12 @@
     <p class="pista">Si podéis echar una mano (acogida, transporte, veterinario…), abrid el caso y pulsad «Podemos ayudar».</p>
     <div id="otros"></div>
 
+    <div id="bloqueAyudo" hidden>
+      <h2>🙌 Casos en los que ayudáis</h2>
+      <p class="pista">Habéis ofrecido ayuda a la asociación que los lleva. Abridlos para ver cómo van.</p>
+      <div id="ayudo"></div>
+    </div>
+
     <details id="bloqueCerrados" hidden>
       <summary>Casos que ya habéis cerrado (<span id="nCerrados">0</span>)</summary>
       <div id="cerrados" style="margin-top:10px"></div>
@@ -125,7 +132,8 @@
     const chips = [
       c.urgencia ? `<span class="chip ${urgente ? 'rojo' : ''}">${esc(c.urgencia)}</span>` : '',
       `<span class="chip ${['Rescatado','En veterinario','En acogida','En adopción','Adoptado'].includes(c.estado) ? 'verde' : ''}">${esc(c.estado)}</span>`,
-      tipo === 'otros' && c.responsable ? `<span class="chip">Lo lleva ${esc(c.responsable)}</span>` : '',
+      (tipo === 'otros' || tipo === 'ayudo') && c.responsable ? `<span class="chip">Lo lleva ${esc(c.responsable)}</span>` : '',
+      tipo === 'mios' && c.ayudas ? `<span class="chip ayuda">🤝 Os ofrecen ayuda (${c.ayudas})</span>` : '',
     ].join('');
     const datos = [c.sitio, c.cuantos && c.cuantos !== '1' ? c.cuantos + ' animales' : '',
       'Aviso ' + (c.recibido || '') + (c.ts ? ' (' + hace(c.ts) + ')' : ''),
@@ -160,6 +168,9 @@
       lista('libres', r.libres, 'libres', 'Ahora mismo no hay casos libres en vuestra zona. 🎉');
       lista('mios', r.mios, 'mios', 'No lleváis ningún caso abierto.');
       lista('otros', r.otros, 'otros', 'Ninguna otra asociación lleva casos abiertos en vuestra zona.');
+      const ayudo = r.ayudo || [];
+      $('bloqueAyudo').hidden = !ayudo.length;
+      lista('ayudo', ayudo, 'ayudo', '');
       $('bloqueCerrados').hidden = !r.cerrados.length;
       $('nCerrados').textContent = r.cerrados.length;
       lista('cerrados', r.cerrados, 'cerrados', '');
