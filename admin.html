@@ -318,11 +318,21 @@
       <div class="meta">🐾 ${esc(x.animales.join(' y '))}${x.ayuda.length ? ' · Ayuda: ' + esc(x.ayuda.join(', ')) : ''}</div>
       ${x.redes ? `<div class="meta">🌐 ${esc(x.redes)}</div>` : ''}${x.comentarios ? `<div class="meta">💬 ${esc(x.comentarios)}</div>` : ''}
       <div class="acciones">${x.estado === 'aprobada'
-        ? `<button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
+        ? `<button class="exito" data-panel="${esc(x.id)}">Enviar su panel</button> <button class="peligro" data-accion="baja" data-id="${esc(x.id)}">Dar de baja</button>`
         : `<button class="exito" data-accion="aprobar" data-id="${esc(x.id)}">Dar de alta</button>`}</div></div>`;
     }).join('') || '<p class="vacio">No hay asociaciones con esos filtros.</p>';
   }
   $('listaAsoc').addEventListener('click', async e => {
+    const p = e.target.closest('button[data-panel]');
+    if (p) {
+      const a = D.asociaciones.find(x => x.id === p.dataset.panel);
+      if (!confirm(`¿Mandar a «${a.nombre}» (${a.email}) el correo con el enlace a su panel de casos?`)) return;
+      p.disabled = true; p.textContent = 'Enviando…';
+      try { const r = await llamar('adminEnviarPanel', { id: a.id }); mostrarMensaje(r.mensaje); }
+      catch (err) { mostrarMensaje(err.message, true); }
+      p.disabled = false; p.textContent = 'Enviar su panel';
+      return;
+    }
     const b = e.target.closest('button[data-accion]');
     if (!b) return;
     const a = D.asociaciones.find(x => x.id === b.dataset.id);

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lilo · Panel</title>
+  <meta name="robots" content="noindex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Lilo">
+  <meta name="theme-color" content="#d9772b">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <style>
+    :root { --fondo: #fbf6ef; --tarjeta: #fff; --texto: #2b2420; --suave: #7a6e66; --borde: #e6dccf;
+      --acento: #d9772b; --acento-oscuro: #b45f1d; --rojo: #c8412f; --verde: #3f8a55; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--fondo); color: var(--texto);
+      font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 20px 16px 64px; }
+    header { text-align: center; margin-bottom: 14px; }
+    .huella { font-size: 34px; }
+    h1 { font-size: 24px; margin: 2px 0 0; letter-spacing: -.3px; }
+    .zona { color: var(--suave); margin: 2px 0 0; font-size: 15px; }
+    .cifras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+    .cifra { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 10px 8px; text-align: center; }
+    .cifra b { display: block; font-size: 26px; line-height: 1.1; }
+    .cifra span { color: var(--suave); font-size: 13px; }
+    .cifra.alerta b { color: var(--rojo); }
+    h2 { font-size: 18px; margin: 26px 0 4px; }
+    .pista { color: var(--suave); font-size: 14px; margin: 0 0 10px; }
+    .caso { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 14px; margin-bottom: 10px;
+      display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; }
+    .caso.urgente { border-left: 5px solid var(--rojo); }
+    .titulo { font-weight: 700; overflow-wrap: anywhere; }
+    .datos { color: var(--suave); font-size: 14px; grid-column: 1 / -1; overflow-wrap: anywhere; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; grid-column: 1 / -1; }
+    .chip { font-size: 12.5px; padding: 2px 9px; border-radius: 999px; background: #f3ebe0; }
+    .chip.rojo { background: #fdecea; color: var(--rojo); font-weight: 600; }
+    .chip.verde { background: #e8f3ec; color: var(--verde); font-weight: 600; }
+    a.boton { display: inline-block; text-decoration: none; text-align: center; background: var(--acento); color: #fff;
+      font-weight: 700; border-radius: 10px; padding: 9px 14px; font-size: 15px; white-space: nowrap; }
+    a.boton:hover { background: var(--acento-oscuro); }
+    a.boton.suave { background: transparent; color: var(--acento-oscuro); border: 1px solid var(--acento); }
+    @media (max-width: 480px) { .caso { grid-template-columns: 1fr; } a.boton { width: 100%; } }
+    .vacio { color: var(--suave); background: var(--tarjeta); border: 1px dashed var(--borde); border-radius: 12px;
+      padding: 14px; text-align: center; font-size: 15px; }
+    .barra { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--suave); font-size: 13px; }
+    button.recargar { font: inherit; font-size: 14px; border: 1px solid var(--borde); background: var(--tarjeta); color: var(--texto);
+      border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+    details { margin-top: 26px; }
+    summary { cursor: pointer; font-weight: 600; }
+    .guardar { background: #fff6ec; border: 1px solid #f1d9bf; border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: 12px; }
+    .error { background: #fdecea; color: var(--rojo); border-radius: 12px; padding: 14px; text-align: center; }
+    footer { text-align: center; color: var(--suave); font-size: 13px; margin-top: 30px; }
+    footer a { color: var(--acento-oscuro); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="huella">🐾</div>
+    <h1 id="nombre">Proyecto Lilo</h1>
+    <p class="zona" id="zona">Cargando vuestro panel…</p>
+  </header>
+
+  <div id="contenido" hidden>
+    <div class="barra"><span id="actualizado"></span><button class="recargar" id="recargar">↻ Actualizar</button></div>
+    <div class="cifras">
+      <div class="cifra" id="cLibres"><b>0</b><span>Libres en vuestra zona</span></div>
+      <div class="cifra"><b id="cMios">0</b><span>Los lleváis vosotros</span></div>
+      <div class="cifra"><b id="cOtros">0</b><span>Los lleva otra asociación</span></div>
+    </div>
+
+    <h2>🆘 Casos libres en vuestra zona</h2>
+    <p class="pista">Nadie se los ha quedado todavía. Abrid el caso y pulsad «Vamos nosotros» para quedároslo.</p>
+    <div id="libres"></div>
+
+    <h2>🧡 Los casos que lleváis</h2>
+    <p class="pista">Contad cómo van: estado, fotos y novedades.</p>
+    <div id="mios"></div>
+
+    <h2>🤝 Los lleva otra asociación de vuestra zona</h2>
+    <p class="pista">Si podéis echar una mano (acogida, transporte, veterinario…), abrid el caso y pulsad «Podemos ayudar».</p>
+    <div id="otros"></div>
+
+    <details id="bloqueCerrados" hidden>
+      <summary>Casos que ya habéis cerrado (<span id="nCerrados">0</span>)</summary>
+      <div id="cerrados" style="margin-top:10px"></div>
+    </details>
+
+    <div class="guardar">
+      📌 <b>Guardad este panel</b>: en el móvil, en el menú del navegador elegid «Añadir a pantalla de inicio»; en el
+      ordenador, añadidlo a favoritos. El enlace es solo de vuestra asociación: no lo compartáis fuera de ella.
+    </div>
+  </div>
+
+  <div class="error" id="error" hidden></div>
+
+  <footer>
+    ¿Dudas? <a id="correo" href="mailto:chemaysumanada@gmail.com">chemaysumanada@gmail.com</a>
+    <span id="canal"></span><br>Chema y su manada · Proyecto Lilo
+  </footer>
+</main>
+<script>
+  const URL_APP = 'https://script.google.com/macros/s/AKfycbzM3bx9_FngJIiSng54z79mJwkgaV_t6sA6j6kUOjbUV7gSQpBUikOaHTkXh1Wz6SEp/exec';
+  const q = new URLSearchParams(location.search);
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function hace(ts) {
+    if (!ts) return '';
+    const m = Math.round((Date.now() - ts) / 60000);
+    if (m < 60) return 'hace ' + Math.max(m, 1) + ' min';
+    const h = Math.round(m / 60);
+    if (h < 48) return 'hace ' + h + ' h';
+    return 'hace ' + Math.round(h / 24) + ' días';
+  }
+
+  function tarjeta(c, tipo) {
+    const urgente = /emergencia|urgente/i.test(c.urgencia || '');
+    const icono = c.animal === 'Perro' ? '🐕' : '🐈';
+    const boton = tipo === 'libres' ? ['Ver y quedárnoslo', ''] : tipo === 'mios' ? ['Contad cómo va', ''] :
+      tipo === 'otros' ? ['Ver caso', 'suave'] : ['Ver caso', 'suave'];
+    const chips = [
+      c.urgencia ? `<span class="chip ${urgente ? 'rojo' : ''}">${esc(c.urgencia)}</span>` : '',
+      `<span class="chip ${['Rescatado','En veterinario','En acogida','En adopción','Adoptado'].includes(c.estado) ? 'verde' : ''}">${esc(c.estado)}</span>`,
+      tipo === 'otros' && c.responsable ? `<span class="chip">Lo lleva ${esc(c.responsable)}</span>` : '',
+    ].join('');
+    const datos = [c.sitio, c.cuantos && c.cuantos !== '1' ? c.cuantos + ' animales' : '',
+      'Aviso ' + (c.recibido || '') + (c.ts ? ' (' + hace(c.ts) + ')' : ''),
+      tipo !== 'libres' && c.novedad ? 'Última novedad: ' + c.novedad : ''].filter(Boolean).map(esc).join(' · ');
+    return `<div class="caso ${urgente && tipo === 'libres' ? 'urgente' : ''}">
+      <div class="titulo">${icono} ${esc(c.caso)} · ${esc(c.municipio)} (${esc(c.provincia)})</div>
+      <a class="boton ${boton[1]}" href="${esc(c.ficha)}">${boton[0]}</a>
+      <div class="chips">${chips}</div>
+      <div class="datos">${datos}</div>
+    </div>`;
+  }
+
+  function lista(id, casos, tipo, vacio) {
+    $(id).innerHTML = casos.length ? casos.map(c => tarjeta(c, tipo)).join('') : `<div class="vacio">${vacio}</div>`;
+  }
+
+  async function cargar() {
+    if (!q.get('a') || !q.get('t')) { mostrarError('Este enlace no está completo. Abrid el enlace del correo «Vuestro panel de casos».'); return; }
+    $('recargar').disabled = true;
+    try {
+      const r = await fetch(URL_APP, { method: 'POST', body: JSON.stringify({ funcion: 'panelAsociacion', datos: { a: q.get('a'), t: q.get('t') } }) })
+        .then(x => x.json());
+      if (!r || !r.ok) throw new Error((r && r.error) || 'No se ha podido cargar el panel.');
+      const a = r.asociacion;
+      $('nombre').textContent = a.nombre;
+      $('zona').textContent = a.animales.join(' y ') + ' · ' + a.provincias.join(', ');
+      document.title = 'Lilo · ' + a.nombre;
+      $('cLibres').querySelector('b').textContent = r.libres.length;
+      $('cLibres').classList.toggle('alerta', r.libres.length > 0);
+      $('cMios').textContent = r.mios.length;
+      $('cOtros').textContent = r.otros.length;
+      lista('libres', r.libres, 'libres', 'Ahora mismo no hay casos libres en vuestra zona. 🎉');
+      lista('mios', r.mios, 'mios', 'No lleváis ningún caso abierto.');
+      lista('otros', r.otros, 'otros', 'Ninguna otra asociación lleva casos abiertos en vuestra zona.');
+      $('bloqueCerrados').hidden = !r.cerrados.length;
+      $('nCerrados').textContent = r.cerrados.length;
+      lista('cerrados', r.cerrados, 'cerrados', '');
+      if (r.canal) $('canal').innerHTML = ' · <a href="' + esc(r.canal) + '" target="_blank" rel="noopener">Canal de WhatsApp</a>';
+      $('actualizado').textContent = 'Actualizado a las ' + new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+      $('contenido').hidden = false;
+      $('error').hidden = true;
+    } catch (e) {
+      mostrarError(e.message || 'No se ha podido cargar el panel. Probad otra vez en un momento.');
+    } finally {
+      $('recargar').disabled = false;
+    }
+  }
+
+  function mostrarError(m) {
+    $('error').textContent = m;
+    $('error').hidden = false;
+    if ($('contenido').hidden) $('zona').textContent = '';
+  }
+
+  $('recargar').addEventListener('click', cargar);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) cargar(); });
+  setInterval(() => { if (!document.hidden) cargar(); }, 5 * 60 * 1000);
+  cargar();
+</script>
+</body>
+</html>

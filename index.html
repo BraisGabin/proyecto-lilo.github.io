@@ -443,6 +443,7 @@
 
   <!-- ============================================================= CASO -->
   <section id="caso" hidden>
+    <p id="casoPanel" hidden style="margin:0 0 6px;font-size:15px"><a id="casoPanelEnlace">← Vuestro panel de casos</a></p>
     <h1 id="casoTitulo">Caso</h1>
     <p class="intro" id="casoCargando">Cargando el caso…</p>
     <p class="error" id="casoError" role="alert"></p>
@@ -1082,6 +1083,10 @@
       $('casoAviso').textContent = c.aviso || 'No hemos podido leer el aviso.';
       $('casoCarpeta').href = c.carpeta;
     };
+    if (credencial.a && credencial.t) {
+      $('casoPanelEnlace').href = 'panel.html?a=' + encodeURIComponent(credencial.a) + '&t=' + encodeURIComponent(credencial.t);
+      $('casoPanel').hidden = false;
+    }
     const cargarCaso = () => llamar('verCaso', credencial).then(pintarCaso, err => {
       $('casoCargando').hidden = true;
       casoError.textContent = (err && err.message) || 'No se pudo abrir el caso.';
