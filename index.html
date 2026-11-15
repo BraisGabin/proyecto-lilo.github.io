@@ -197,6 +197,79 @@
       color: #fff; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .galeria .sin { display: flex; align-items: center; justify-content: center; height: 100%; padding: 6px; text-align: center; }
     .subtitulo-galeria { font-weight: 600; margin: 4px 0 8px; }
+    /* ---- Formulario de aviso por pasos (solo dentro de #form) */
+    #form .fp-progreso { display: flex; gap: 6px; margin: 4px 0 6px; }
+    #form .fp-progreso span { flex: 1; height: 6px; border-radius: 3px; background: #eadfce; }
+    #form .fp-progreso span.hecho { background: var(--acento); }
+    #form .fp-paso-n { color: var(--suave); font-size: 13.5px; font-weight: 600; }
+    #form .fp-paso { display: none; }
+    #form .fp-paso.activo { display: block; }
+    #form .fp-h { font-size: 24px; line-height: 1.2; margin: 2px 0 4px; letter-spacing: -.3px; }
+    #form .fp-sub { color: var(--suave); margin: 0 0 16px; font-size: 15px; }
+    #form .fp-preg { margin: 20px 0 8px; font-weight: 700; font-size: 16.5px; }
+    #form .fp-preg small, #form .fp-campo small { font-weight: 400; color: var(--suave); }
+    #form .fp-grandes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #form .fp-grandes label { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 8px; background: var(--tarjeta);
+      border: 2px solid var(--borde); border-radius: 16px; cursor: pointer; font-weight: 700; font-size: 17px; text-align: center; margin: 0; }
+    #form .fp-ico { font-size: 38px; line-height: 1; }
+    #form .fp-lista label { display: flex; gap: 12px; align-items: center; padding: 12px 14px; background: var(--tarjeta); border: 2px solid var(--borde);
+      border-radius: 14px; margin: 0 0 8px; cursor: pointer; font-weight: 400; }
+    #form .fp-punto { width: 14px; height: 14px; border-radius: 50%; flex: 0 0 14px; }
+    #form .fp-lista strong { display: block; }
+    #form .fp-lista small { color: var(--suave); font-size: 13.5px; }
+    #form .fp-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    #form .fp-chips label { padding: 9px 14px; background: var(--tarjeta); border: 2px solid var(--borde); border-radius: 999px; cursor: pointer; font-size: 15px;
+      font-weight: 400; margin: 0; display: inline-flex; align-items: center; gap: 4px; }
+    #form .fp-grandes input, #form .fp-lista input, #form .fp-chips input, #form .fp-interr input, #form .fp-acepto input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+    #form .fp-grandes label:has(input:checked), #form .fp-chips label:has(input:checked), #form .fp-lista label:has(input:checked) {
+      border-color: var(--acento); background: #fff1e3; color: var(--acento-oscuro); }
+    #form .fp-grandes label:has(input:checked) { box-shadow: 0 0 0 3px rgba(217,119,43,.18); }
+    #form .fp-lista label.rojo:has(input:checked) { border-color: var(--rojo); background: #fdeeec; color: var(--texto); }
+    #form .fp-lista label.amar:has(input:checked) { border-color: #c99212; background: #fdf6e3; color: var(--texto); }
+    #form .fp-lista label.verd:has(input:checked) { border-color: var(--verde); background: #eef7f1; color: var(--texto); }
+    #form .fp-campo { display: block; margin: 0 0 12px; }
+    #form .fp-campo > span { display: block; font-weight: 700; margin-bottom: 6px; }
+    #form .fp-campo input, #form .fp-campo select, #form .fp-campo textarea { width: 100%; font: inherit; font-size: 16px; padding: 12px 14px;
+      border: 2px solid var(--borde); border-radius: 12px; background: #fff; color: var(--texto); box-sizing: border-box; }
+    #form .fp-campo textarea { min-height: 96px; resize: vertical; }
+    #form .fp-campo input:focus, #form .fp-campo select:focus, #form .fp-campo textarea:focus { outline: none; border-color: var(--acento); }
+    #form .fp-dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 420px) { #form .fp-dos { grid-template-columns: 1fr; gap: 0; } }
+    #form .fp-alerta { background: #fdeeec; border: 1px solid #f1c3bc; border-radius: 14px; padding: 12px 14px; font-size: 14.5px; margin: 0 0 14px; }
+    #form .fp-alerta.fuerte { background: var(--rojo); color: #fff; border: 0; margin-top: 12px; }
+    #form .fp-ubic { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 14px; border: 2px dashed var(--acento);
+      background: #fff6ec; color: var(--acento-oscuro); font: inherit; font-weight: 800; font-size: 16px; cursor: pointer; margin: 0 0 6px; }
+    #form .fp-ubic-ok { background: #eef7f1; border: 1px solid #bfe0ca; color: #2c6b40; border-radius: 12px; padding: 10px 12px; font-size: 14.5px; margin-bottom: 12px; }
+    #form .fp-o { text-align: center; color: var(--suave); font-size: 13px; margin: 8px 0; }
+    #form .fp-subir { display: block; text-align: center; padding: 22px 14px; border: 2px dashed var(--borde); border-radius: 16px; background: #fff; cursor: pointer; }
+    #form .fp-subir small { color: var(--suave); }
+    #form .fp-subir input { display: none; }
+    #form .fp-interr { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--tarjeta);
+      border: 2px solid var(--borde); border-radius: 14px; margin: 0 0 8px; cursor: pointer; font-size: 15px; font-weight: 400; }
+    #form .fp-pista { width: 46px; height: 28px; border-radius: 14px; background: #d8cfc3; position: relative; flex: 0 0 46px; transition: .2s; }
+    #form .fp-pista::after { content: ''; position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: .2s; }
+    #form .fp-interr:has(input:checked) .fp-pista { background: var(--verde); }
+    #form .fp-interr:has(input:checked) .fp-pista::after { left: 21px; }
+    #form .fp-acepto { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--suave); padding: 10px 0; cursor: pointer; font-weight: 400; }
+    #form .fp-caja { width: 24px; height: 24px; border: 2px solid var(--borde); border-radius: 6px; flex: 0 0 24px; background: #fff; display: flex; align-items: center; justify-content: center; }
+    #form .fp-acepto:has(input:checked) .fp-caja { background: var(--acento); border-color: var(--acento); color: #fff; }
+    #form .fp-acepto:has(input:checked) .fp-caja::after { content: '✓'; font-weight: 800; }
+    #form .fp-resumen { display: grid; gap: 10px; }
+    #form .fp-bloque { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; }
+    #form .fp-cab { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    #form .fp-cab h3 { margin: 0; font-size: 16px; }
+    #form .fp-cambiar { width: auto; font: inherit; font-size: 14px; color: var(--acento-oscuro); font-weight: 700; background: none; border: 0; padding: 4px; cursor: pointer; margin: 0; }
+    #form .fp-bloque dl { margin: 0; display: grid; grid-template-columns: minmax(100px, 38%) 1fr; gap: 4px 10px; font-size: 14.5px; }
+    #form .fp-bloque dt { color: var(--suave); }
+    #form .fp-bloque dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+    #form .fp-barra { position: sticky; bottom: 0; margin: 16px -16px 0; background: rgba(251,246,239,.97); border-top: 1px solid var(--borde);
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); z-index: 20; }
+    #form .fp-dentro { display: flex; gap: 10px; }
+    #form .fp-dentro button { font: inherit; font-weight: 800; font-size: 17px; border-radius: 14px; padding: 15px; cursor: pointer; margin: 0; }
+    #form .fp-atras { width: auto; flex: 0 0 auto; background: #fff; border: 2px solid var(--borde); color: var(--texto); padding: 15px 18px !important; }
+    #form .fp-sig { flex: 1; width: auto; background: var(--acento); color: #fff; border: 0; }
+    #form .fp-sig[hidden], #form .fp-atras[hidden] { display: none; }
+    #form .error { margin: 10px 0 0; }
   </style>
 </head>
 <body>
@@ -216,198 +289,185 @@
   <!-- ============================================================ RESCATES -->
   <section id="rescates">
     <h1>Avisar de un rescate</h1>
-    <p class="intro">Cuéntanos todo lo que sepas del animal. Cuanto más detalle, antes podemos ayudarle.</p>
-
-    <div class="nota">
-      Chema es una sola persona y no siempre puede llegar a todo: da prioridad a los casos más urgentes y,
-      si el rescate queda lejos, intentará que lo atienda una asociación o un compañero de tu zona.
-    </div>
-
-    <div class="emergencia">
-      <strong>¿Está herido grave o en peligro ahora mismo?</strong> Llévalo o llama a una clínica veterinaria de urgencias cercana o al 112. Después rellena el aviso.
-    </div>
+    <p class="intro">Cinco pasos cortos. Casi todo se responde con un toque.</p>
 
     <form id="form" novalidate>
       <input class="trampa" type="text" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="fp-progreso" id="fpProgreso"></div>
+      <div class="fp-paso-n" id="fpPasoN"></div>
 
-      <fieldset>
-        <legend>¿Qué animal es? <span class="req">*</span></legend>
-        <div class="opciones animal">
-          <label><input type="radio" name="animal" value="Gato" required> 🐈 Un gato</label>
-          <label><input type="radio" name="animal" value="Perro"> 🐕 Un perro</label>
+      <!-- PASO 1 · Qué pasa -->
+      <section class="fp-paso" data-titulo="¿Qué pasa?">
+        <h2 class="fp-h">¿Qué ha pasado?</h2>
+        <p class="fp-sub">Con esto sabemos lo rápido que hay que ir.</p>
+        <div class="fp-alerta"><b>¿Está herido grave o en peligro ahora mismo?</b> Llama a una clínica veterinaria de urgencias o al 112. Después, rellena el aviso.</div>
+        <div class="fp-preg">¿Qué animal es? <span class="req">*</span></div>
+        <div class="fp-grandes">
+          <label><input type="radio" name="animal" value="Gato" required><span class="fp-ico">🐈</span>Un gato</label>
+          <label><input type="radio" name="animal" value="Perro"><span class="fp-ico">🐕</span>Un perro</label>
         </div>
-      </fieldset>
+        <div class="fp-preg">¿Cómo de urgente es? <span class="req">*</span></div>
+        <div class="fp-lista">
+          <label class="rojo"><input type="radio" name="urgencia" value="EMERGENCIA" required><span class="fp-punto" style="background:var(--rojo)"></span>
+            <span><strong>Emergencia</strong><small>Herido grave, atropellado, atrapado o en peligro ahora</small></span></label>
+          <label class="amar"><input type="radio" name="urgencia" value="Urgente"><span class="fp-punto" style="background:#c99212"></span>
+            <span><strong>Urgente</strong><small>Enfermo, muy delgado, crías solas, mucho frío o calor</small></span></label>
+          <label class="verd"><input type="radio" name="urgencia" value="Puede esperar"><span class="fp-punto" style="background:var(--verde)"></span>
+            <span><strong>Puede esperar unos días</strong><small>Parece estar bien pero necesita ayuda u hogar</small></span></label>
+        </div>
+        <div class="fp-preg">¿Qué le ves? <small>(marca todo lo que veas)</small></div>
+        <div class="fp-chips">
+          <label><input type="checkbox" name="senales" value="Herida visible">🩸 Herida</label>
+          <label><input type="checkbox" name="senales" value="Cojea">🦵 Cojea</label>
+          <label><input type="checkbox" name="senales" value="Ojos o mocos">👁️ Ojos o mocos</label>
+          <label><input type="checkbox" name="senales" value="Muy delgado">🦴 Muy delgado</label>
+          <label><input type="checkbox" name="senales" value="Embarazada o con crías">🍼 Embarazada o con crías</label>
+          <label><input type="checkbox" name="senales" value="Atrapado">🪤 Atrapado</label>
+          <label class="solo-gato"><input type="checkbox" name="senales" value="Atrapado en el motor de un coche" id="motor">🚗 En el motor de un coche</label>
+          <label><input type="checkbox" name="senales" value="No se mueve">⚠️ No se mueve</label>
+          <label><input type="checkbox" name="senales" value="Parece sano">💚 Parece sano</label>
+        </div>
+        <div class="fp-alerta fuerte" id="avisoMotor" hidden><b>🚗 Gato en el motor:</b> que nadie arranque el coche. Avisa al dueño si sabes de quién es,
+          da unos golpes en el capó y espera: a veces sale solo. Si no, llama al 112 o a la Policía Local. Lo marcamos como <b>Emergencia</b>.</div>
+      </section>
 
-      <fieldset>
-        <legend>Tus datos</legend>
-        <label class="campo"><span class="titulo">Tu nombre y apellidos <span class="req">*</span></span>
-          <input type="text" name="nombre" required autocomplete="name"></label>
-        <div class="dos">
-          <label class="campo"><span class="titulo">Teléfono <span class="req">*</span></span>
-            <input type="tel" name="telefono" required autocomplete="tel"></label>
-          <label class="campo"><span class="titulo">Email <small>(opcional, te enviamos confirmación)</small></span>
-            <input type="email" name="email" autocomplete="email"></label>
+      <!-- PASO 2 · Dónde -->
+      <section class="fp-paso" data-titulo="¿Dónde está?">
+        <h2 class="fp-h">¿Dónde está?</h2>
+        <p class="fp-sub">Lo más importante para que la asociación lo encuentre.</p>
+        <button type="button" class="fp-ubic" id="fpUbicar">📍 Estoy aquí ahora: usar mi ubicación</button>
+        <div class="fp-ubic-ok" id="fpUbicOk" hidden></div>
+        <div class="fp-o">o escríbelo</div>
+        <div class="fp-dos">
+          <label class="fp-campo"><span>Provincia <span class="req">*</span></span><select name="provincia" id="provincia" required><option value="">Elige…</option></select></label>
+          <label class="fp-campo"><span>Localidad <span class="req">*</span></span><input type="text" name="localidad" required placeholder="Pueblo o ciudad"></label>
         </div>
-        <label class="check"><input type="checkbox" name="whatsapp" checked> Tengo WhatsApp en este número</label>
-        <label class="check"><input type="checkbox" name="avisarme" checked> Si dejo mi email, avisadme cuando el animal esté a salvo</label>
-        <div class="dos">
-          <label class="campo"><span class="titulo">Tu Instagram o TikTok <small>(opcional)</small></span>
-            <input type="text" name="redes" placeholder="@usuario"></label>
-          <label class="campo"><span class="titulo">Mejor hora para llamarte</span>
-            <input type="text" name="horario" placeholder="Por las tardes, a cualquier hora…"></label>
+        <label class="fp-campo"><span>Calle o punto de referencia <span class="req">*</span></span>
+          <textarea name="lugar" required placeholder="Ej.: Calle Mayor 12, detrás del supermercado, junto a los contenedores…"></textarea></label>
+        <input type="hidden" name="mapa" id="fpMapa">
+        <div class="fp-preg">¿Qué tipo de sitio es?</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="tipoSitio" value="Calle">🏙️ Calle</label>
+          <label><input type="radio" name="tipoSitio" value="Carretera">🛣️ Carretera</label>
+          <label><input type="radio" name="tipoSitio" value="Solar o descampado">🌾 Solar o campo</label>
+          <label class="solo-gato"><input type="radio" name="tipoSitio" value="Colonia de gatos">🐾 Colonia de gatos</label>
+          <label><input type="radio" name="tipoSitio" value="Casa o finca">🏡 Casa o finca</label>
+          <label><input type="radio" name="tipoSitio" value="Lo tengo en casa">🏠 Ya lo tengo en casa</label>
+          <label><input type="radio" name="tipoSitio" value="Otro">Otro</label>
         </div>
-      </fieldset>
+      </section>
 
-      <fieldset>
-        <legend>Dónde está</legend>
-        <div class="dos">
-          <label class="campo"><span class="titulo">Provincia <span class="req">*</span></span>
-            <select name="provincia" id="provincia" required><option value="">Elige la provincia…</option></select></label>
-          <label class="campo"><span class="titulo">Localidad <span class="req">*</span></span>
-            <input type="text" name="localidad" required></label>
-        </div>
-        <label class="campo"><span class="titulo">Dirección o punto de referencia <span class="req">*</span></span>
-          <textarea name="lugar" required placeholder="Calle, número, detrás del supermercado, en el parque junto a los columpios…"></textarea></label>
-        <label class="campo"><span class="titulo">Enlace de Google Maps <small>(opcional, ayuda mucho)</small></span>
-          <input type="url" name="mapa" placeholder="https://maps.app.goo.gl/…"></label>
-        <span class="titulo">Tipo de sitio</span>
-        <div class="opciones">
-          <label><input type="radio" name="tipoSitio" value="Calle"> Calle</label>
-          <label><input type="radio" name="tipoSitio" value="Solar o descampado"> Solar o descampado</label>
-          <label class="solo-gato"><input type="radio" name="tipoSitio" value="Colonia de gatos"> Colonia</label>
-          <label><input type="radio" name="tipoSitio" value="Carretera"> Carretera</label>
-          <label><input type="radio" name="tipoSitio" value="Casa o finca"> Casa o finca</label>
-          <label><input type="radio" name="tipoSitio" value="Lo tengo en casa"> Lo tengo en casa</label>
-          <label><input type="radio" name="tipoSitio" value="Otro"> Otro</label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend data-gato="El gato" data-perro="El perro">El animal</legend>
-        <div class="dos">
-          <label class="campo"><span class="titulo">Nombre <small>(si lo sabes)</small></span>
-            <input type="text" name="nombreGato"></label>
-          <label class="campo"><span class="titulo" data-gato="¿Cuántos gatos son?" data-perro="¿Cuántos perros son?">¿Cuántos son?</span>
-            <select name="cuantos">
-              <option>1</option><option>2</option><option>3</option>
-              <option>Camada de crías</option><option>Más de 3</option>
-            </select></label>
-        </div>
-        <span class="titulo">Edad aproximada</span>
-        <div class="opciones">
-          <label><input type="radio" name="edad" value="Bebé (menos de 2 meses)"> Bebé</label>
-          <label><input type="radio" name="edad" value="Cachorro (2-6 meses)"> Cachorro</label>
-          <label><input type="radio" name="edad" value="Adulto"> Adulto</label>
-          <label><input type="radio" name="edad" value="Mayor"> Mayor</label>
-          <label><input type="radio" name="edad" value="No lo sé"> No lo sé</label>
-        </div>
-        <span class="titulo">Sexo</span>
-        <div class="opciones">
-          <label><input type="radio" name="sexo" value="Macho"> Macho</label>
-          <label><input type="radio" name="sexo" value="Hembra"> Hembra</label>
-          <label><input type="radio" name="sexo" value="No lo sé"> No lo sé</label>
-        </div>
-        <div class="solo-perro">
-          <span class="titulo">Tamaño</span>
-          <div class="opciones">
-            <label><input type="radio" name="tamano" value="Pequeño"> Pequeño</label>
-            <label><input type="radio" name="tamano" value="Mediano"> Mediano</label>
-            <label><input type="radio" name="tamano" value="Grande"> Grande</label>
-          </div>
-          <span class="titulo">¿Lleva collar o chapa?</span>
-          <div class="opciones">
-            <label><input type="radio" name="collar" value="Lleva collar o chapa"> Sí</label>
-            <label><input type="radio" name="collar" value="No lleva collar"> No</label>
-            <label><input type="radio" name="collar" value="No lo sé"> No lo sé</label>
-          </div>
-        </div>
-        <label class="campo"><span class="titulo">Cómo es</span>
-          <input type="text" name="aspecto" placeholder="Atigrado gris, collar rojo, le falta un trozo de oreja…"
-            data-gato="Atigrado gris, collar rojo, le falta un trozo de oreja…" data-perro="Mestizo marrón, orejas caídas, collar azul…"></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>Cómo está</legend>
-        <span class="titulo">Urgencia <span class="req">*</span></span>
-        <div class="opciones urgencia">
-          <label><input type="radio" name="urgencia" value="EMERGENCIA" required>
-            <span><strong>Emergencia</strong><small>Herido grave, atropellado, atrapado (también en el motor de un coche) o en peligro ahora</small></span></label>
-          <label><input type="radio" name="urgencia" value="Urgente">
-            <span><strong>Urgente</strong><small>Enfermo, muy delgado, crías solas, hace mucho frío o calor</small></span></label>
-          <label><input type="radio" name="urgencia" value="Puede esperar">
-            <span><strong>Puede esperar unos días</strong><small>Parece estar bien pero necesita un hogar</small></span></label>
-        </div>
-        <span class="titulo">¿Qué le ves? <small>(marca todo lo que veas)</small></span>
-        <div class="opciones">
-          <label><input type="checkbox" name="senales" value="Herida visible"> Herida</label>
-          <label><input type="checkbox" name="senales" value="Cojea"> Cojea</label>
-          <label><input type="checkbox" name="senales" value="Ojos o mocos"> Ojos o mocos</label>
-          <label><input type="checkbox" name="senales" value="Muy delgado"> Muy delgado</label>
-          <label><input type="checkbox" name="senales" value="Embarazada o con crías"> Embarazada o con crías</label>
-          <label><input type="checkbox" name="senales" value="Atrapado"> Atrapado</label>
-          <label class="solo-gato"><input type="checkbox" name="senales" value="Atrapado en el motor de un coche" id="motor"> Atrapado en el motor de un coche</label>
-          <label><input type="checkbox" name="senales" value="No se mueve"> No se mueve</label>
-          <label><input type="checkbox" name="senales" value="Parece sano"> Parece sano</label>
-        </div>
-        <div class="emergencia" id="avisoMotor" hidden>
-          <strong>Gato en el motor de un coche:</strong> que nadie arranque el coche. Si sabes de quién es, avisa al dueño.
-          Da unos golpes en el capó y espera un poco: a veces sale solo. Si no sale, llama al 112 o a la Policía Local.
-          Hemos marcado el aviso como <strong>Emergencia</strong>.
-        </div>
-        <label class="campo"><span class="titulo">Cuéntanos cómo está <span class="req">*</span></span>
-          <textarea name="estado" required placeholder="Qué le pasa, cómo se comporta, si come…"></textarea></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>La situación</legend>
-        <label class="campo"><span class="titulo">¿Desde cuándo está ahí?</span>
-          <input type="text" name="desdeCuando" placeholder="Desde ayer, hace una semana…"></label>
-        <span class="titulo">¿Crees que lo han abandonado?</span>
-        <div class="opciones">
-          <label><input type="radio" name="abandono" value="Sí, parece abandonado"> Sí, parece abandonado</label>
-          <label><input type="radio" name="abandono" value="Parece callejero" data-gato="Parece callejero" data-perro="Parece perdido"> <span data-gato="Parece callejero" data-perro="Parece perdido">Parece callejero</span></label>
-          <label><input type="radio" name="abandono" value="No lo sé"> No lo sé</label>
-        </div>
-        <p class="pista" data-gato="Pistas de abandono: es dócil o se nota que ha vivido en casa, lleva collar, apareció de repente o han visto cómo lo dejaban." data-perro="Pistas de abandono: lleva collar pero nadie lo busca, apareció de repente, está desorientado o han visto cómo lo dejaban.">Pistas de abandono: es dócil o se nota que ha vivido en casa, lleva collar, apareció de repente o han visto cómo lo dejaban.</p>
-        <span class="titulo">¿Se deja coger?</span>
-        <div class="opciones">
-          <label><input type="radio" name="manejo" value="Ya lo tengo recogido"> Ya lo tengo recogido</label>
-          <label><input type="radio" name="manejo" value="Sí, se deja tocar"> Sí, se deja tocar</label>
-          <label><input type="radio" name="manejo" value="Se acerca pero no se deja coger"> Se acerca pero no se deja</label>
-          <label><input type="radio" name="manejo" value="Huye, es asustadizo"> Huye</label>
-          <label><input type="radio" name="manejo" value="No lo sé"> No lo sé</label>
-        </div>
-        <span class="titulo">¿Alguien le da de comer?</span>
-        <div class="opciones">
-          <label><input type="radio" name="comida" value="Sí, yo"> Sí, yo</label>
-          <label><input type="radio" name="comida" value="Sí, otra persona"> Sí, otra persona</label>
-          <label><input type="radio" name="comida" value="No"> No</label>
-          <label><input type="radio" name="comida" value="No lo sé"> No lo sé</label>
-        </div>
-        <span class="titulo">¿Puedes ayudar con algo?</span>
-        <div class="opciones">
-          <label><input type="checkbox" name="ayuda" value="Acogida temporal"> Acogida temporal</label>
-          <label><input type="checkbox" name="ayuda" value="Llevarlo al veterinario"> Llevarlo al veterinario</label>
-          <label><input type="checkbox" name="ayuda" value="Transporte"> Transporte</label>
-          <label><input type="checkbox" name="ayuda" value="Aportar para el veterinario"> Aportar dinero</label>
-          <label><input type="checkbox" name="ayuda" value="Darle de comer mientras tanto"> Darle de comer</label>
-          <label><input type="checkbox" name="ayuda" value="Solo puedo avisar"> Solo puedo avisar</label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Fotos y más detalles</legend>
-        <label class="campo"><span class="titulo">Fotos o capturas <small>(hasta 5)</small></span>
+      <!-- PASO 3 · Cómo es -->
+      <section class="fp-paso" data-titulo="¿Cómo es?">
+        <h2 class="fp-h">¿Cómo es el <span data-gato="gato" data-perro="perro">animal</span>?</h2>
+        <p class="fp-sub">Para reconocerlo al llegar. Una foto ayuda muchísimo.</p>
+        <label class="fp-subir"><span class="fp-ico">📷</span><b>Añadir fotos</b><br><small>Hasta 5 · desde la cámara o la galería</small>
           <input type="file" name="fotos" accept="image/*" multiple></label>
         <div class="fotos-vista" id="vista"></div>
-        <label class="campo"><span class="titulo">Algo más que debamos saber</span>
-          <textarea name="comentarios"></textarea></label>
-        <label class="check"><input type="checkbox" name="consentimiento" required>
-          <span>Acepto que Chema y su manada (Proyecto Lilo) guarde estos datos y los comparta con las asociaciones colaboradoras de la zona, solo para gestionar este rescate y contactar conmigo. <span class="req">*</span></span></label>
-      </fieldset>
+        <div class="fp-preg">¿Cuántos son?</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="cuantos" value="1" checked>1</label><label><input type="radio" name="cuantos" value="2">2</label>
+          <label><input type="radio" name="cuantos" value="3">3</label><label><input type="radio" name="cuantos" value="Más de 3">Más de 3</label>
+          <label><input type="radio" name="cuantos" value="Camada de crías">🍼 Una camada</label>
+        </div>
+        <div class="fp-preg">Edad aproximada</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="edad" value="Bebé (menos de 2 meses)">Bebé</label><label><input type="radio" name="edad" value="Cachorro (2-6 meses)">Cachorro</label>
+          <label><input type="radio" name="edad" value="Adulto">Adulto</label><label><input type="radio" name="edad" value="Mayor">Mayor</label>
+          <label><input type="radio" name="edad" value="No lo sé">No lo sé</label>
+        </div>
+        <div class="fp-preg">Sexo</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="sexo" value="Macho">Macho</label><label><input type="radio" name="sexo" value="Hembra">Hembra</label>
+          <label><input type="radio" name="sexo" value="No lo sé">No lo sé</label>
+        </div>
+        <div class="solo-perro">
+          <div class="fp-preg">Tamaño</div>
+          <div class="fp-chips"><label><input type="radio" name="tamano" value="Pequeño">Pequeño</label><label><input type="radio" name="tamano" value="Mediano">Mediano</label><label><input type="radio" name="tamano" value="Grande">Grande</label></div>
+          <div class="fp-preg">¿Lleva collar o chapa?</div>
+          <div class="fp-chips"><label><input type="radio" name="collar" value="Lleva collar o chapa">Sí</label><label><input type="radio" name="collar" value="No lleva collar">No</label><label><input type="radio" name="collar" value="No lo sé">No lo sé</label></div>
+        </div>
+        <label class="fp-campo" style="margin-top:16px"><span>Color y señas</span><input type="text" name="aspecto" placeholder="Atigrado gris, collar rojo, le falta un trozo de oreja…"
+          data-gato="Atigrado gris, collar rojo, le falta un trozo de oreja…" data-perro="Mestizo marrón, orejas caídas, collar azul…"></label>
+        <label class="fp-campo"><span>Nombre <small>(si lo sabes)</small></span><input type="text" name="nombreGato"></label>
+      </section>
 
-      <button type="submit">Enviar aviso</button>
+      <!-- PASO 4 · Situación -->
+      <section class="fp-paso" data-titulo="La situación">
+        <h2 class="fp-h">¿Cómo está y qué ha pasado?</h2>
+        <p class="fp-sub">Así la asociación sabe qué llevar: transportín, jaula trampa, comida…</p>
+        <div class="fp-preg">¿Se deja coger?</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="manejo" value="Ya lo tengo recogido">🤲 Ya lo tengo</label>
+          <label><input type="radio" name="manejo" value="Sí, se deja tocar">😺 Se deja tocar</label>
+          <label><input type="radio" name="manejo" value="Se acerca pero no se deja coger">🤏 Se acerca pero no se deja</label>
+          <label><input type="radio" name="manejo" value="Huye, es asustadizo">💨 Huye</label>
+          <label><input type="radio" name="manejo" value="No lo sé">No lo sé</label>
+        </div>
+        <div class="fp-preg">¿Desde cuándo está ahí?</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="desdeCuando" value="Hoy">Hoy</label><label><input type="radio" name="desdeCuando" value="Desde ayer">Desde ayer</label>
+          <label><input type="radio" name="desdeCuando" value="Unos días">Unos días</label><label><input type="radio" name="desdeCuando" value="Más de una semana">Más de una semana</label>
+          <label><input type="radio" name="desdeCuando" value="No lo sé">No lo sé</label>
+        </div>
+        <div class="fp-preg">¿Crees que lo han abandonado?</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="abandono" value="Sí, parece abandonado">Sí, parece abandonado</label>
+          <label><input type="radio" name="abandono" value="Parece callejero" data-gato="Parece callejero" data-perro="Parece perdido"><span data-gato="Parece callejero" data-perro="Parece perdido">Parece callejero</span></label>
+          <label><input type="radio" name="abandono" value="No lo sé">No lo sé</label>
+        </div>
+        <div class="fp-preg">¿Alguien le da de comer?</div>
+        <div class="fp-chips">
+          <label><input type="radio" name="comida" value="Sí, yo">Sí, yo</label><label><input type="radio" name="comida" value="Sí, otra persona">Sí, otra persona</label>
+          <label><input type="radio" name="comida" value="No">No</label><label><input type="radio" name="comida" value="No lo sé">No lo sé</label>
+        </div>
+        <label class="fp-campo" style="margin-top:18px"><span>Cuéntanos cómo está <span class="req">*</span></span>
+          <textarea name="estado" required placeholder="Qué le pasa, cómo se comporta, si come, si hay peligro cerca (tráfico, perros)…"></textarea></label>
+        <label class="fp-campo"><span>¿Algo más que deba saber la asociación?</span>
+          <textarea name="comentarios" placeholder="Horario en que suele aparecer, a quién preguntar, si hay que pedir permiso para entrar…" style="min-height:70px"></textarea></label>
+      </section>
+
+      <!-- PASO 5 · Tus datos -->
+      <section class="fp-paso" data-titulo="Tus datos">
+        <h2 class="fp-h">¿Cómo te localizamos?</h2>
+        <p class="fp-sub">Solo los verá la asociación que se encargue del rescate.</p>
+        <label class="fp-campo"><span>Tu nombre <span class="req">*</span></span><input type="text" name="nombre" required autocomplete="name"></label>
+        <label class="fp-campo"><span>Teléfono <span class="req">*</span></span><input type="tel" name="telefono" required autocomplete="tel" inputmode="tel" placeholder="600 000 000"></label>
+        <label class="fp-interr"><span>💬 Tengo WhatsApp en este número</span><input type="checkbox" name="whatsapp" checked><span class="fp-pista"></span></label>
+        <div class="fp-preg">¿Cuándo te viene mejor que te llamen?</div>
+        <div class="fp-chips">
+          <label><input type="checkbox" name="horarioOp" value="Mañanas">🌅 Mañanas</label><label><input type="checkbox" name="horarioOp" value="Tardes">🌇 Tardes</label>
+          <label><input type="checkbox" name="horarioOp" value="Noches">🌙 Noches</label><label><input type="checkbox" name="horarioOp" value="A cualquier hora">Cualquier hora</label>
+        </div>
+        <input type="hidden" name="horario">
+        <label class="fp-campo" style="margin-top:16px"><span>Email <small>(opcional)</small></span><input type="email" name="email" autocomplete="email" placeholder="Para enviarte la confirmación"></label>
+        <label class="fp-interr"><span>🐾 Avisadme por email cuando esté a salvo</span><input type="checkbox" name="avisarme" checked><span class="fp-pista"></span></label>
+        <div class="fp-preg">¿Puedes ayudar con algo? <small>(opcional)</small></div>
+        <div class="fp-chips">
+          <label><input type="checkbox" name="ayuda" value="Acogida temporal">🏠 Acogida</label><label><input type="checkbox" name="ayuda" value="Llevarlo al veterinario">🩺 Llevarlo al veterinario</label>
+          <label><input type="checkbox" name="ayuda" value="Transporte">🚗 Transporte</label><label><input type="checkbox" name="ayuda" value="Darle de comer mientras tanto">🥣 Darle de comer</label>
+          <label><input type="checkbox" name="ayuda" value="Aportar para el veterinario">💶 Aportar dinero</label><label><input type="checkbox" name="ayuda" value="Solo puedo avisar">Solo puedo avisar</label>
+        </div>
+        <label class="fp-campo" style="margin-top:16px"><span>Tu Instagram o TikTok <small>(opcional)</small></span><input type="text" name="redes" placeholder="@usuario"></label>
+      </section>
+
+      <!-- PASO 6 · Revisar -->
+      <section class="fp-paso" data-titulo="Revisar y enviar">
+        <h2 class="fp-h">Revisa el aviso</h2>
+        <p class="fp-sub">Así lo verá la asociación. Toca «Cambiar» si algo no está bien.</p>
+        <div class="fp-resumen" id="fpResumen"></div>
+        <div class="nota" style="margin-top:12px">Chema es una sola persona y no siempre puede llegar a todo: da prioridad a los casos más urgentes y,
+          si el rescate queda lejos, intentará que lo atienda una asociación o un compañero de tu zona.</div>
+        <label class="fp-acepto"><input type="checkbox" name="consentimiento" required><span class="fp-caja"></span>
+          <span>Acepto que Chema y su manada (Proyecto Lilo) guarde estos datos y los comparta con las asociaciones colaboradoras de la zona, solo para gestionar este rescate y contactar conmigo. <span class="req">*</span></span></label>
+      </section>
+
       <p class="error" role="alert"></p>
+      <div class="fp-barra"><div class="fp-dentro">
+        <button type="button" class="fp-atras" id="fpAtras" aria-label="Paso anterior">←</button>
+        <button type="button" class="fp-sig" id="fpSig">Siguiente</button>
+        <button type="submit" class="fp-sig" id="fpEnviar" hidden>🐾 Enviar aviso</button>
+      </div></div>
     </form>
 
     <section class="gracias">
@@ -798,6 +858,7 @@
       try {
         if (f === form) datos.fotos = await Promise.all([...inputFotos.files].slice(0, 5).map(reducirFoto));
         await llamar(funcion, datos);
+        if (f === form) { try { localStorage.removeItem('lilo_borrador_aviso'); } catch (e) {} }
         f.style.display = 'none';
         gracias.style.display = 'block';
         window.scrollTo(0, 0);
@@ -814,15 +875,16 @@
       zonas.querySelectorAll('.cuenta').forEach(c => c.textContent = '');
       f.style.display = '';
       gracias.style.display = 'none';
-      if (f === form) aplicarAnimal();
+      if (f === form) { aplicarAnimal(); irPaso(0); }
       if (f === formAsociacion) mostrar('rescates');
     });
   }
 
   preparar(form, {
     funcion: 'enviarRescate',
-    textoBoton: 'Enviar aviso',
+    textoBoton: '🐾 Enviar aviso',
     recogerDatos: () => {
+      form.elements.horario.value = [...form.querySelectorAll('input[name="horarioOp"]:checked')].map(i => i.value).join(', ');
       const d = recoger(form,
         ['web', 'nombre', 'telefono', 'email', 'redes', 'horario', 'provincia', 'localidad', 'lugar',
          'mapa', 'nombreGato', 'cuantos', 'aspecto', 'estado', 'desdeCuando', 'comentarios'],
@@ -845,6 +907,108 @@
       return '';
     },
   });
+
+  /* ---------- Formulario de aviso por pasos */
+  const fpEl = id => document.getElementById(id);
+  const fpPasos = [...form.querySelectorAll('.fp-paso')];
+  const FP_N = fpPasos.length - 1;            // el último es «Revisar y enviar»
+  const fpError = form.querySelector('.error');
+  let fpActual = 0;
+  const fpVal = n => {
+    const el = form.elements[n];
+    if (!el) return '';
+    return (el.value || '').trim();           // en radios, .value es el marcado
+  };
+  const fpLista = n => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map(x => x.value).join(', ');
+  const fpFaltas = [
+    () => !animalElegido() ? 'Elige si es un gato o un perro.' : !fpVal('urgencia') ? 'Dinos cómo de urgente es.' : '',
+    () => !fpVal('provincia') ? 'Elige la provincia.' : !fpVal('localidad') ? 'Escribe la localidad.' : !fpVal('lugar') ? 'Escribe la calle o un punto de referencia.' : '',
+    () => '',
+    () => !fpVal('estado') ? 'Cuéntanos en pocas palabras cómo está.' : '',
+    () => !fpVal('nombre') ? 'Escribe tu nombre.' : fpVal('telefono').replace(/\D/g, '').length < 9 ? 'Revisa el teléfono: necesitamos poder llamarte.' : '',
+  ];
+  // Borrador: si sale a hacer una foto o se cierra la página, no pierde lo escrito.
+  const FP_BORR = 'lilo_borrador_aviso';
+  function fpGuardar() {
+    const d = {};
+    new FormData(form).forEach((v, k) => { if (k !== 'fotos' && k !== 'web') (d[k] = d[k] || []).push(v); });
+    try { localStorage.setItem(FP_BORR, JSON.stringify(d)); } catch (e) {}
+  }
+  function fpCargar() {
+    try {
+      const d = JSON.parse(localStorage.getItem(FP_BORR) || 'null'); if (!d) return;
+      Object.entries(d).forEach(([k, vs]) => form.querySelectorAll(`[name="${k}"]`).forEach(el => {
+        if (el.type === 'radio' || el.type === 'checkbox') el.checked = vs.includes(el.value);
+        else if (el.type !== 'file') el.value = vs[0];
+      }));
+      if (fpVal('mapa')) { fpEl('fpUbicOk').hidden = false; fpEl('fpUbicOk').textContent = '✅ Ubicación guardada.'; }
+    } catch (e) {}
+  }
+  form.addEventListener('change', fpGuardar);
+  form.addEventListener('input', () => { fpError.textContent = ''; fpGuardar(); });
+
+  // Ubicación exacta: a la asociación le llega un enlace al mapa con el punto.
+  fpEl('fpUbicar').addEventListener('click', () => {
+    if (!navigator.geolocation) { fpError.textContent = 'Tu móvil no permite compartir la ubicación. Escríbela abajo.'; return; }
+    fpEl('fpUbicar').textContent = 'Buscando tu ubicación…';
+    navigator.geolocation.getCurrentPosition(p => {
+      const { latitude: la, longitude: lo, accuracy } = p.coords;
+      form.elements.mapa.value = `https://maps.google.com/?q=${la.toFixed(6)},${lo.toFixed(6)}`;
+      fpEl('fpUbicOk').hidden = false;
+      fpEl('fpUbicOk').textContent = `✅ Ubicación guardada (precisión ±${Math.round(accuracy)} m). Añade abajo una referencia para encontrarlo.`;
+      fpEl('fpUbicar').textContent = '📍 Actualizar mi ubicación';
+      fpGuardar();
+    }, () => {
+      fpEl('fpUbicar').textContent = '📍 Estoy aquí ahora: usar mi ubicación';
+      fpError.textContent = 'No hemos podido obtener tu ubicación. Escríbela abajo.';
+    }, { enableHighAccuracy: true, timeout: 12000 });
+  });
+
+  function fpResumen() {
+    const r = fpEl('fpResumen'); r.innerHTML = '';
+    const bloque = (titulo, paso, filas) => {
+      const b = crear('div', 'fp-bloque'), cab = crear('div', 'fp-cab');
+      cab.appendChild(crear('h3', '', titulo));
+      const ed = crear('button', 'fp-cambiar', 'Cambiar'); ed.type = 'button'; ed.onclick = () => irPaso(paso); cab.appendChild(ed);
+      b.appendChild(cab);
+      const dl = crear('dl');
+      filas.filter(([, v]) => v).forEach(([k, v]) => { dl.appendChild(crear('dt', '', k)); dl.appendChild(crear('dd', '', v)); });
+      b.appendChild(dl); r.appendChild(b);
+    };
+    const a = animalElegido();
+    bloque((a === 'Perro' ? '🐕' : '🐈') + ' Qué pasa', 0, [['Animal', a], ['Urgencia', fpVal('urgencia')], ['Qué le ves', fpLista('senales')]]);
+    bloque('📍 Dónde', 1, [['Lugar', [fpVal('lugar').replace(/[.\s]+$/, ''), fpVal('localidad'), fpVal('provincia')].filter(Boolean).join(', ')],
+      ['Ubicación exacta', fpVal('mapa') ? 'Sí, compartida' : ''], ['Tipo de sitio', fpVal('tipoSitio')]]);
+    bloque('🔎 Cómo es', 2, [['Cuántos', fpVal('cuantos')], ['Edad', fpVal('edad')], ['Sexo', fpVal('sexo')], ['Tamaño', a === 'Perro' ? fpVal('tamano') : ''],
+      ['Collar', a === 'Perro' ? fpVal('collar') : ''], ['Señas', fpVal('aspecto')], ['Nombre', fpVal('nombreGato')],
+      ['Fotos', inputFotos.files.length ? Math.min(5, inputFotos.files.length) + ' foto(s)' : 'Sin fotos']]);
+    bloque('🧭 Situación', 3, [['¿Se deja coger?', fpVal('manejo')], ['Desde cuándo', fpVal('desdeCuando')], ['¿Abandonado?', fpVal('abandono')],
+      ['¿Le dan de comer?', fpVal('comida')], ['Cómo está', fpVal('estado')], ['Más detalles', fpVal('comentarios')]]);
+    bloque('📞 Tus datos', 4, [['Nombre', fpVal('nombre')], ['Teléfono', fpVal('telefono') + (form.elements.whatsapp.checked ? ' (WhatsApp)' : '')],
+      ['Mejor hora', fpLista('horarioOp')], ['Email', fpVal('email')], ['Puedes ayudar con', fpLista('ayuda')]]);
+  }
+
+  function irPaso(n) {
+    fpActual = n;
+    fpPasos.forEach((p, i) => p.classList.toggle('activo', i === n));
+    fpEl('fpProgreso').innerHTML = Array.from({ length: FP_N }, (_, i) => `<span class="${i <= n ? 'hecho' : ''}"></span>`).join('');
+    fpEl('fpPasoN').textContent = n < FP_N ? `Paso ${n + 1} de ${FP_N} · ${fpPasos[n].dataset.titulo}` : 'Último paso · Revisar y enviar';
+    fpEl('fpAtras').hidden = n === 0;
+    fpEl('fpSig').hidden = n === FP_N;
+    fpEl('fpEnviar').hidden = n !== FP_N;
+    fpEl('fpSig').textContent = n === FP_N - 1 ? 'Revisar el aviso' : 'Siguiente';
+    fpError.textContent = '';
+    if (n === FP_N) fpResumen();
+    const top = form.getBoundingClientRect().top + window.scrollY - 70;
+    if (window.scrollY > top) window.scrollTo(0, Math.max(0, top));
+  }
+  fpEl('fpSig').addEventListener('click', () => {
+    const falta = fpFaltas[fpActual] && fpFaltas[fpActual]();
+    if (falta) { fpError.textContent = falta; return; }
+    irPaso(fpActual + 1);
+  });
+  fpEl('fpAtras').addEventListener('click', () => irPaso(Math.max(0, fpActual - 1)));
+  fpCargar(); aplicarAnimal(); irPaso(0);
 
   const formAsociacion = document.getElementById('formAsociacion');
   preparar(formAsociacion, {
